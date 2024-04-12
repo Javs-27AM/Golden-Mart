@@ -1,0 +1,53 @@
+-- Crear la base de datos "goldenmart"
+CREATE DATABASE IF NOT EXISTS goldenmart;
+
+-- Cambiar al contexto de la base de datos "goldenmart"
+USE goldenmart;
+
+-- Crear la tabla Producto
+CREATE TABLE IF NOT EXISTS Producto (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(255) NOT NULL,
+    Precio DECIMAL(10, 2) NOT NULL,
+    Descripcion VARCHAR(1000),
+    Marca VARCHAR(100),
+    Cantidad_Disponible INT NOT NULL,
+    Imagen VARCHAR(255)
+);
+
+-- Crear la tabla Administrador
+CREATE TABLE IF NOT EXISTS Administrador (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(100) NOT NULL,
+    Contraseña VARCHAR(255) NOT NULL
+);
+
+-- Crear la tabla Venta
+CREATE TABLE IF NOT EXISTS Venta (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Total DECIMAL(10, 2) NOT NULL,
+    Administrador_ID INT,
+    FOREIGN KEY (Administrador_ID) REFERENCES Administrador(ID)
+);
+
+-- Crear la tabla DetalleVenta
+CREATE TABLE IF NOT EXISTS DetalleVenta (
+    Venta_ID INT,
+    Producto_ID INT,
+    Cantidad INT NOT NULL,
+    PrecioUnitario DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (Venta_ID, Producto_ID),
+    FOREIGN KEY (Venta_ID) REFERENCES Venta(ID),
+    FOREIGN KEY (Producto_ID) REFERENCES Producto(ID)
+);
+
+-- Crear la tabla Ticket
+CREATE TABLE IF NOT EXISTS Ticket (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Venta_ID INT,
+    DetalleVenta_ID INT,
+    FOREIGN KEY (Venta_ID) REFERENCES Venta(ID),
+    FOREIGN KEY (DetalleVenta_ID) REFERENCES DetalleVenta(Venta_ID)
+);
+
