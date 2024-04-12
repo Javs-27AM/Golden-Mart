@@ -1,0 +1,104 @@
+Aquí te presento las 7 historias de usuario junto con una propuesta de interfaz para la historia de usuario del cliente (Autocobro):
+
+### Historia de Usuario 1: Iniciar Sesión como Administrador
+- **Como** administrador de la tienda de abarrotes.
+- **Quiero** poder iniciar sesión en el sistema utilizando mis credenciales.
+- **Para** acceder a las funciones administrativas y gestionar el sistema.
+
+**Criterios de Aceptación:**
+- La interfaz de inicio de sesión del administrador debe tener campos para ingresar el nombre de usuario y la contraseña.
+- El sistema debe verificar las credenciales proporcionadas por el administrador y permitir el acceso si son correctas.
+- Si las credenciales son incorrectas, el sistema debe mostrar un mensaje de error adecuado.
+- Después de iniciar sesión correctamente, el administrador debería ser dirigido a la interfaz correspondiente para realizar tareas de gestión, como agregar nuevos productos, ver informes de ventas, etc.
+
+### Historia de Usuario 2: Registro de Producto
+- **Como** administrador de la tienda de abarrotes.
+- **Quiero** poder registrar nuevos productos en el inventario.
+- **Para** mantener actualizado el catálogo de productos disponibles en la tienda.
+
+**Criterios de Aceptación:**
+- El sistema permite ingresar el nombre, precio, descripción, marca y cantidad disponible del producto.
+- Los campos obligatorios deben ser completados para poder registrar un nuevo producto.
+- Se debe mostrar un mensaje de confirmación cuando se registra exitosamente un producto.
+
+### Historia de Usuario 3: Gestionar Inventario
+- **Como** administrador de la tienda de abarrotes.
+- **Quiero** poder gestionar el inventario de productos, incluyendo la cantidad disponible de cada producto.
+- **Para** mantener un control detallado del stock y evitar la falta de productos en la tienda.
+
+**Criterios de Aceptación:**
+- El sistema muestra una lista de productos disponibles en el inventario, incluyendo su nombre, precio, descripción, marca y cantidad disponible.
+- Se pueden realizar operaciones de actualización de stock, como agregar o restar unidades de un producto.
+- Se deben registrar los cambios en el inventario correctamente y reflejarlos en la cantidad disponible de cada producto.
+
+Entendido, vamos a dividir la historia de usuario para adaptarla a dos escenarios diferentes. Aquí están las dos historias de usuario:
+
+### Historia de Usuario 4: Realizar Venta sin Modificaciones
+- **Como** cliente de la tienda de abarrotes.
+- **Quiero** poder seleccionar productos del inventario y finalizar la compra sin realizar modificaciones al carrito.
+- **Para** completar mi compra rápidamente cuando estoy seguro de mi selección de productos.
+
+**Criterios de Aceptación:**
+- La interfaz de usuario muestra imágenes de los productos disponibles en el inventario.
+- Se proporciona un campo de búsqueda que permite al usuario buscar productos por nombre o marca.
+- El usuario puede seleccionar un producto de la lista de imágenes para agregarlo a su carrito de compras.
+- Después de agregar los productos deseados, el usuario puede finalizar la compra.
+- El sistema calcula correctamente el total de la venta y muestra un resumen de la transacción antes de confirmar la compra.
+- Una vez confirmada la compra, se genera automáticamente un ticket de compra con los detalles de la transacción.
+
+### Historia de Usuario 5: Realizar Venta con Modificaciones al Carrito
+- **Como** cliente de la tienda de abarrotes.
+- **Quiero** poder seleccionar y quitar productos del carrito de compras antes de finalizar la compra.
+- **Para** corregir errores o ajustar mi selección de productos según sea necesario antes de completar la compra.
+
+**Criterios de Aceptación:**
+- La interfaz de usuario muestra imágenes de los productos disponibles en el inventario.
+- Se proporciona un campo de búsqueda que permite al usuario buscar productos por nombre o marca.
+- El usuario puede seleccionar un producto de la lista de imágenes para agregarlo a su carrito de compras.
+- El usuario puede ver una lista de productos seleccionados en su carrito de compras, con la opción de quitar productos individualmente si así lo desea.
+- Se recalcula automáticamente el total de la venta y el precio final después de quitar productos del carrito.
+- El usuario puede finalizar la compra una vez que esté satisfecho con su selección de productos.
+- Una vez confirmada la compra, se genera automáticamente un ticket de compra con los detalles de la transacción.
+
+
+### Historia de Usuario 6: Generar Pago del Cliente
+- **Como** cliente de la tienda de abarrotes.
+- **Quiero** poder pagar por los productos seleccionados al finalizar mi compra.
+- **Para** completar la transacción de compra y obtener mis productos de manera rápida y conveniente.
+
+**Criterios de Aceptación:**
+- Después de seleccionar los productos, el sistema muestra al cliente las opciones de pago disponibles (efectivo, tarjeta, etc.).
+- El cliente elige el método de pago deseado y completa la transacción.
+
+### Historia de Usuario 7: Generar Ticket de Compra
+- **Como** cliente de la tienda de abarrotes.
+- **Quiero** recibir un ticket de compra digital con los detalles de mi transacción al finalizar la compra.
+- **Para** tener una confirmación de mi compra y un registro de los productos adquiridos.
+
+**Criterios de Aceptación:**
+- Después de completar la compra, el sistema genera automáticamente un ticket de compra digital que incluye los detalles de la transacción, como la lista de productos comprados, el total de la venta y la fecha de la transacción.
+- El ticket de compra digital se muestra al cliente en pantalla y se puede descargar o imprimir según sea necesario.
+
+### Historia de Usuario 8: Modificar Producto
+- **Como** administrador de la tienda de abarrotes.
+- **Quiero** poder modificar la información de un producto existente en el inventario.
+- **Para** corregir errores, actualizar precios, descripciones, marca o cualquier otra información relacionada con el producto.
+
+**Criterios de Aceptación:**
+- El sistema muestra una lista de productos existentes en el inventario, junto con la opción de editar cada uno de ellos.
+- Se pueden modificar el nombre, precio, descripción, marca y cantidad disponible del producto seleccionado.
+- Los cambios realizados se reflejan correctamente en el inventario y en la visualización del producto.
+
+Historia de Usuario 9: Generar Factura
+Como cliente de la tienda de abarrotes.
+Quiero tener la opción de generar una factura para mi compra si así lo deseo.
+Para tener un registro detallado de la transacción y facilitar cualquier proceso administrativo o de contabilidad relacionado con la compra.
+Criterios de Aceptación:
+
+Después de confirmar la compra, se proporciona al cliente la opción de generar una factura para la transacción.
+Si el cliente elige generar una factura, el sistema recopila los detalles de la transacción, incluyendo la lista de productos comprados, el total de la venta y la fecha de la transacción.
+El sistema genera automáticamente una factura con los detalles recopilados y la presenta al cliente para su visualización y descarga.
+La factura generada cumple con los requisitos legales y fiscales aplicables en la jurisdicción correspondiente.
+El cliente puede optar por descargar o imprimir la factura según sea necesario.
+
+
