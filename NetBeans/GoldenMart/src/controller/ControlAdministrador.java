@@ -65,12 +65,17 @@ public void actionPerformed(ActionEvent e) {
          } else {
                 boolean accesoAutorizado = admin.verificarCredenciales(user, contrasenia);
                 if (accesoAutorizado) {
-                    JOptionPane.showMessageDialog(null, "Acceso autorizado");
+                    JOptionPane optionPane = new JOptionPane("Acceso autorizado", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"});
+                    JDialog dialog = optionPane.createDialog("");
+                    dialog.setVisible(true);
                     ControlSesionAdmin controlSesionAdmin = new ControlSesionAdmin();
                     controlSesionAdmin.view.setVisible(true);
                     this.view.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Acceso denegado");
+                    // Para el acceso denegado
+                    JOptionPane optionPane = new JOptionPane("Acceso denegado", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"});
+                    JDialog dialog = optionPane.createDialog("Error");
+                    dialog.setVisible(true);
                 }
         }
     }

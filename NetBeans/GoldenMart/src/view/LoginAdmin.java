@@ -40,7 +40,7 @@ public class LoginAdmin extends javax.swing.JFrame {
         jContrasena = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("LoginAdmin");
+        setTitle("Iniciar Sesion Administrador");
         setMinimumSize(null);
         setSize(new java.awt.Dimension(540, 400));
 
