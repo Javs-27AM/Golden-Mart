@@ -212,22 +212,40 @@ public class Producto {
         }
 }
     
-    public void buscarProducto(String textoBusqueda) {
-    String sql = "SELECT * FROM producto WHERE Nombre LIKE ? OR Marca LIKE ? OR Categoria LIKE ?";
-    
+    public List<Producto> buscarProductos(String textoBusqueda) {
+    List<Producto> productos = new ArrayList<>();
+    String sql = "SELECT * FROM producto WHERE Eliminado = 0 AND (Nombre LIKE ? OR Marca LIKE ? OR Categoria LIKE ?)";
+
     try (Connection con = conexion.getConnection();
-        PreparedStatement pstmt = con.prepareStatement(sql)) {
+         PreparedStatement pstmt = con.prepareStatement(sql)) {
         pstmt.setString(1, "%" + textoBusqueda + "%");
         pstmt.setString(2, "%" + textoBusqueda + "%");
         pstmt.setString(3, "%" + textoBusqueda + "%");
-        
-        ResultSet rs = pstmt.executeQuery();
-        // Aquí puedes manejar los resultados de la búsqueda, por ejemplo, mostrarlos en una tabla
+
+        try (ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("IdProducto"));
+                producto.setNombre(rs.getString("Nombre"));
+                producto.setMarca(rs.getString("Marca"));
+                producto.setContenidoNeto(rs.getString("ContenidoNeto"));
+                producto.setCategoria(rs.getString("Categoria"));
+                producto.setPrecio(rs.getFloat("Precio"));
+                producto.setImagen(rs.getString("Imagen"));
+                producto.setCantidadDisponible(rs.getInt("Cantidad_Disponible"));
+                producto.setDescripcion(rs.getString("Descripcion"));
+                productos.add(producto);
+            }
+        }
     } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL para buscar productos.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Error al buscar productos.", "Error", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
     }
+    
+    return productos;
 }
+
+
     public Producto obtenerProductoPorId(int idProducto) {
     String sql = "SELECT * FROM producto WHERE IdProducto = ? AND Eliminado = 0"; // Solo productos no eliminados
     

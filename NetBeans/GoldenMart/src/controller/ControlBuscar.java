@@ -1,55 +1,62 @@
 package controller;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import model.Producto;
 import view.GestionarInventario;
 
-public class ControlBuscar implements ActionListener {
+public class ControlBuscar {
+    
     private GestionarInventario view;
-    private Producto producto;
+    private Producto productoModel;
+    private final int IMAGEN_COLUMN_WIDTH = 125;
+    private final int IMAGEN_COLUMN_HEIGHT = 125;
     private DefaultTableModel model;
 
-    // Constructor que recibe la vista y el modelo de la tabla
-    public ControlBuscar(GestionarInventario view, DefaultTableModel model) {
+    public ControlBuscar(GestionarInventario view, Producto productoModel) {
         this.view = view;
-        this.model = model;
-        this.producto = new Producto(); // Instancia del modelo Producto
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == view.jBusqueda || e.getSource() == view.jBuscar) {
-            // Obtener el texto ingresado en el campo de búsqueda
-            String textoBusqueda = view.jBusqueda.getText();
-            
-            // Realizar la búsqueda del producto en la base de datos
-            List<Producto> productosEncontrados = producto.buscarProducto(textoBusqueda); // Implementa este método en la clase Producto
-
-            if (!productosEncontrados.isEmpty()) {
-                // Mostrar los productos encontrados en la tabla
-                cargarProductos(productosEncontrados);
-            } else {
-                // Limpiar la tabla si no se encuentra ningún producto
-                model.setRowCount(0);
-                JOptionPane.showMessageDialog(null, "No se encontraron productos con el nombre especificado.", "Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+        this.productoModel = productoModel;
+        this.view.jBusqueda.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                String textoBusqueda = view.jBusqueda.getText();
+                //System.out.println("Texto de búsqueda: " + textoBusqueda);
+                cargarProductos(view.jProducto, textoBusqueda);
             }
-        }
+        });
+        this.view.jBuscar.addActionListener(e -> buscarProducto());
     }
 
-    // Método para cargar los productos encontrados en la tabla
-    private void cargarProductos(List<Producto> productos) {
-        model.setRowCount(0); // Limpiar la tabla antes de agregar nuevos datos
+    private void buscarProducto() {
+        String textoBusqueda = view.jBusqueda.getText();
+        //System.out.println("Texto de búsqueda: " + textoBusqueda);
+        cargarProductos(view.jProducto, textoBusqueda);
+    }
+
+    public void cargarProductos(JTable tabla, String textoBusqueda) {
+        List<Producto> productos = (textoBusqueda.isEmpty()) ? productoModel.listaProductos() : productoModel.buscarProductos(textoBusqueda);
+        model = new DefaultTableModel();
+        model.addColumn("ID Producto");
+        model.addColumn("Nombre");
+        model.addColumn("Marca");
+        model.addColumn("Contenido Neto");
+        model.addColumn("Categoría");
+        model.addColumn("Precio");
+        model.addColumn("Cantidad Disponible");
+        model.addColumn("Imagen");
+        model.addColumn("Modificar");
+        model.addColumn("Eliminar");
 
         for (Producto producto : productos) {
             JButton botonModificar = new JButton("Modificar");
@@ -73,9 +80,33 @@ public class ControlBuscar implements ActionListener {
             };
             model.addRow(row);
         }
+        tabla.setModel(model);
+
+        TableColumnModel columnModel = tabla.getColumnModel();
+        for (int column = 0; column < tabla.getColumnCount(); column++) {
+            if (column == 7) { // Columna de la imagen
+                columnModel.getColumn(column).setPreferredWidth(IMAGEN_COLUMN_WIDTH);
+                columnModel.getColumn(column).setMinWidth(IMAGEN_COLUMN_WIDTH);
+                columnModel.getColumn(column).setMaxWidth(IMAGEN_COLUMN_WIDTH);
+                columnModel.getColumn(column).setResizable(false);
+                tabla.setRowHeight(IMAGEN_COLUMN_HEIGHT);
+            } else {
+                int width = 15;
+                for (int row = 0; row < tabla.getRowCount(); row++) {
+                    TableCellRenderer renderer = tabla.getCellRenderer(row, column);
+                    Component comp = tabla.prepareRenderer(renderer, row, column);
+                    width = Math.max(comp.getPreferredSize().width + 1, width);
+                }
+                columnModel.getColumn(column).setPreferredWidth(width);
+            }
+        }
+        tabla.getColumnModel().getColumn(0).setMinWidth(0);
+        tabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabla.getColumnModel().getColumn(0).setWidth(0);
+        tabla.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
+        tabla.getColumnModel().getColumn(9).setCellRenderer(new ComponentCellRenderer());
     }
 
-    // Método para crear un ImageIcon a partir de una ruta de imagen
     protected ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
@@ -87,8 +118,4 @@ public class ControlBuscar implements ActionListener {
             return null;
         }
     }
-
-    // Constantes para el ancho y alto de la columna de imagen
-    private static final int IMAGEN_COLUMN_WIDTH = 125;
-    private static final int IMAGEN_COLUMN_HEIGHT = 125;
 }

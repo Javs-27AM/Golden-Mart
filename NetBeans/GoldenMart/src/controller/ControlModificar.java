@@ -13,36 +13,40 @@ import view.ModificarProducto;
  *
  * @author Javs
  */
-
-
-public class ControlModificar implements ActionListener {
+    // Suponiendo que el ID del producto a modificar se obtiene como parámetro del constructor
+    public class ControlModificar implements ActionListener {
     public ModificarProducto view;
     private Producto producto;
     public int idProductoBuscado;
     private Connection con;
     Conexion conexion = new Conexion();
 
-    // Suponiendo que el ID del producto a modificar se obtiene como parámetro del constructor
+    // Constructor que recibe el ID del producto a modificar
     public ControlModificar(int idProductoBuscado) {
         this.idProductoBuscado = idProductoBuscado; // Asignar el ID del producto a la variable de instancia
         this.view = new ModificarProducto();
         this.producto = new Producto();
+
+        // Intentar obtener el producto por su ID
         Producto productoAModificar = producto.obtenerProductoPorId(idProductoBuscado);
-    if (productoAModificar != null) {
-        view.jIdProducto.setText(String.valueOf(productoAModificar.getIdProducto()));
-        view.jNombre.setText(productoAModificar.getNombre());
-        view.jMarca.setText(productoAModificar.getMarca());
-        view.jContenido.setText(productoAModificar.getContenidoNeto());
-        view.jCategoria.setSelectedItem(productoAModificar.getCategoria());
-        view.jPrecio.setText(String.valueOf(productoAModificar.getPrecio()));
-        view.jImagen.setText(productoAModificar.getImagen());
-        view.jCantidad.setText(String.valueOf(productoAModificar.getCantidadDisponible()));
-        view.jDescripcion.setText(productoAModificar.getDescripcion());
-    } else {
-        JOptionPane optionPane = new JOptionPane("No se encontró ningún producto con el ID especificado.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"}, "Aceptar");
-        JDialog dialog = optionPane.createDialog("Error");
-        dialog.setVisible(true);
-}
+        if (productoAModificar != null) {
+            // Si se encuentra el producto, cargar los campos del formulario
+            view.jIdProducto.setText(String.valueOf(productoAModificar.getIdProducto()));
+            view.jNombre.setText(productoAModificar.getNombre());
+            view.jMarca.setText(productoAModificar.getMarca());
+            view.jContenido.setText(productoAModificar.getContenidoNeto());
+            view.jCategoria.setSelectedItem(productoAModificar.getCategoria());
+            view.jPrecio.setText(String.valueOf(productoAModificar.getPrecio()));
+            view.jImagen.setText(productoAModificar.getImagen());
+            view.jCantidad.setText(String.valueOf(productoAModificar.getCantidadDisponible()));
+            view.jDescripcion.setText(productoAModificar.getDescripcion());
+        } else {
+            // Si no se encuentra el producto, mostrar un mensaje de error y salir
+            JOptionPane.showMessageDialog(null, "No se encontró ningún producto con el ID especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Asignar los listeners de los botones
         this.view.jModificar.addActionListener(this);
         this.view.jCancelar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
@@ -210,3 +214,4 @@ public class ControlModificar implements ActionListener {
         }
     }
 }
+

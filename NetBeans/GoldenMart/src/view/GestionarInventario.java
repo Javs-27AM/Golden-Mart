@@ -13,8 +13,6 @@ import javax.swing.JFrame;
  */
 public class GestionarInventario extends javax.swing.JFrame {
     public DefaultTableModel model;
-    private final int IMAGEN_COLUMN_WIDTH = 125;
-    private final int IMAGEN_COLUMN_HEIGHT = 125; 
 
     /**
      * Creates new form GestionarInventario
@@ -23,6 +21,8 @@ public class GestionarInventario extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jProducto.setDefaultRenderer(Object.class, new ComponentCellRenderer());
+        
+
         // Hacer que las celdas no sean editables
         //jProducto.setDefaultEditor(Object.class, null);
     }
@@ -143,105 +143,7 @@ public class GestionarInventario extends javax.swing.JFrame {
     private void jActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jActualizarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jActualizarActionPerformed
-    /*public void cargarProductosEnTabla(List<Producto> productos) {
-        model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 8 || column == 9;
-            }
-        };
-        model.addColumn("ID Producto"); 
-        model.addColumn("Nombre");
-        model.addColumn("Marca");
-        model.addColumn("Contenido Neto");
-        model.addColumn("Categoría");
-        model.addColumn("Precio");
-        model.addColumn("Cantidad Disponible");
-        model.addColumn("Imagen");
-        model.addColumn("Modificar");
-        model.addColumn("Eliminar");
-        
-        for (Producto producto : productos) {
-            // Obtiene la ruta de la imagen del producto
-            JButton botonModificar = new JButton("Modificar");
-            botonModificar.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(null, "¡Hola! Este es un mensaje de saludo.");
-    }
-            });
-            
-            JButton botonEliminar = new JButton("Eliminar");
-            botonEliminar.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    // Agregar lógica para eliminar el producto
-                }
-            });
-            
-            String rutaImagen = producto.getImagen();
-            ImageIcon imageIcon = createImageIcon(rutaImagen); // Carga la imagen como ImageIcon
-            JLabel imagenLabel = new JLabel(imageIcon); // Crea un JLabel con el ImageIcon
-            imagenLabel.setPreferredSize(new Dimension(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT));
-            Object[] row = {
-                producto.getIdProducto(),
-                producto.getNombre(),
-                producto.getMarca(),
-                producto.getContenidoNeto(),
-                producto.getCategoria(),
-                producto.getPrecio(),
-                producto.getCantidadDisponible(),
-                imagenLabel, // Agrega el JLabel con la imagen a la fila
-                botonModificar, // Botón "Modificar"
-                botonEliminar 
-            };
-            model.addRow(row);
-        }
-        jProducto.setModel(model);
-        // Ajustar automáticamente el tamaño de las columnas
-        TableColumnModel columnModel = jProducto.getColumnModel();
-        for (int column = 0; column < jProducto.getColumnCount(); column++) {
-            if (column == 7) { // Columna de la imagen
-                columnModel.getColumn(column).setPreferredWidth(IMAGEN_COLUMN_WIDTH);
-                columnModel.getColumn(column).setMinWidth(IMAGEN_COLUMN_WIDTH);
-                columnModel.getColumn(column).setMaxWidth(IMAGEN_COLUMN_WIDTH);
-                columnModel.getColumn(column).setResizable(false); // Para que la columna de la imagen no sea redimensionable
-                jProducto.setRowHeight(IMAGEN_COLUMN_HEIGHT);
-            } else {
-                int width = 15; // Ancho mínimo de la columna
-                for (int row = 0; row < jProducto.getRowCount(); row++) {
-                    TableCellRenderer renderer = jProducto.getCellRenderer(row, column);
-                    Component comp = jProducto.prepareRenderer(renderer, row, column);
-                    width = Math.max(comp.getPreferredSize().width + 1, width);
-                }
-                columnModel.getColumn(column).setPreferredWidth(width);
-            }
-        }
-        // Hacer invisible la columna del ID del producto
-    jProducto.getColumnModel().getColumn(0).setMinWidth(0);
-    jProducto.getColumnModel().getColumn(0).setMaxWidth(0);
-    jProducto.getColumnModel().getColumn(0).setWidth(0);
-    jProducto.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
-    jProducto.getColumnModel().getColumn(9).setCellRenderer(new ComponentCellRenderer());
-    
-    }
-    
-    // Método para cargar la imagen desde la ruta y devolver un ImageIcon
-    protected ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            ImageIcon icon = new ImageIcon(imgURL);
-            Image image = icon.getImage().getScaledInstance(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT, Image.SCALE_SMOOTH);
-            return new ImageIcon(image);
-        } else {
-            System.err.println("No se pudo encontrar el archivo de imagen: " + path);
-            return null;
-        }
-    }
 
-
-        
-     
-    
-*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton jActualizar;
@@ -251,6 +153,7 @@ public class GestionarInventario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     public javax.swing.JTable jProducto;
     public javax.swing.JButton jRegresar;
-    private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
 }

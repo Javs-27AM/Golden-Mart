@@ -17,13 +17,13 @@ public class Conexion {
     public Connection getConnection(){
         Connection conn = null;
         String jdbcUrl = "jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database;
-        System.out.println(jdbcUrl);
+        //System.out.println(jdbcUrl);
         
         try {
             conn = DriverManager.getConnection(jdbcUrl, this.username, this.password);
-            System.out.println("Conexion Exitosa");
+            //System.out.println("Conexion Exitosa");
         } catch(SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+           // System.out.println("Error: " + e.getMessage());
         } 
         return conn;
     }

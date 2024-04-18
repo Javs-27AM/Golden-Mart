@@ -13,7 +13,7 @@ public class ControlEliminar implements ActionListener {
         this.idProductoEliminar = idProductoEliminar;
         this.producto = new Producto();
         
-        try {
+       try {
             Producto productoAEliminar = producto.obtenerProductoPorId(idProductoEliminar);
             if (productoAEliminar != null) {
                 int opcion = JOptionPane.showOptionDialog(null, "¿Estás seguro que deseas eliminar este producto?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "No");
@@ -22,7 +22,11 @@ public class ControlEliminar implements ActionListener {
                     // Suponiendo que ControlGestionarInventario tiene un método cargarProductos
                     ControlGestionarInventario controlGestionarInventario = new ControlGestionarInventario();
                     controlGestionarInventario.view.setVisible(true);
-                }
+                } else {
+                    // Si el usuario elige "No" o cierra el diálogo, cargar el controlador del inventario
+                    ControlGestionarInventario controlGestionarInventario = new ControlGestionarInventario();
+                    controlGestionarInventario.iniciar();
+                } 
             } else {
                 JOptionPane.showMessageDialog(null, "No se encontró ningún producto con el ID especificado.", "Error", JOptionPane.ERROR_MESSAGE);
             }

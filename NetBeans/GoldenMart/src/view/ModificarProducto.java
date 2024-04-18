@@ -15,22 +15,7 @@ public class ModificarProducto extends javax.swing.JFrame {
     public ModificarProducto() {
         initComponents();
         setVisible(true);
-        setResizable(false); 
-        setPreferredSize(getSize());
-    setMinimumSize(getSize());
-    setMaximumSize(getSize());
-    //pack(); // Hace que los componentes se ajusten al tamaño fijo de la ventana
-    
-    // Desactiva el ajuste automático del tamaño de los campos de texto
-    jIdProducto.setColumns(jIdProducto.getText().length());
-    jNombre.setColumns(jNombre.getText().length());
-    jMarca.setColumns(jMarca.getText().length());
-    jContenido.setColumns(jContenido.getText().length());
-    jPrecio.setColumns(jPrecio.getText().length());
-    jImagen.setColumns(jImagen.getText().length());
-    jCantidad.setColumns(jCantidad.getText().length());
-    jDescripcion.setColumns(jDescripcion.getText().length());
-        //jIdProducto.setVisible(false);
+        jIdProducto.setVisible(false);
     }
 
     /**
@@ -158,9 +143,8 @@ public class ModificarProducto extends javax.swing.JFrame {
                                 .addGap(35, 35, 35)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jIdProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                                .addComponent(jMarca)))
+                            .addComponent(jNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jMarca, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
