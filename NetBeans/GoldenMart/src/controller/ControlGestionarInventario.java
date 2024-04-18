@@ -52,16 +52,18 @@ public class ControlGestionarInventario implements ActionListener {
             int fila = view.jProducto.rowAtPoint(e.getPoint());
             int columna = view.jProducto.columnAtPoint(e.getPoint());
             if (fila >= 0 && columna == 8) { // Columna de Modificar
-               int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
+                int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
                 ControlModificar controlModificar = new ControlModificar(idProducto);
                 controlModificar.view.setVisible(true);
                 view.dispose();
             } else if (fila >= 0 && columna == 9) { // Columna de Eliminar
                 int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
-                ControlEliminar controlEliminar = new ControlEliminar(idProducto);}
+                ControlEliminar controlEliminar = new ControlEliminar(idProducto);
                 view.dispose();
+            }
         }
     });
+
         this.productoModel = new Producto();
         cargarProductos();
     }
