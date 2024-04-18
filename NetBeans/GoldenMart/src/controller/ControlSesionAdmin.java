@@ -16,7 +16,7 @@ import view.SesionAdmin;
  */
 
 public class ControlSesionAdmin implements ActionListener {
-    SesionAdmin view;
+    public SesionAdmin view;
     private Conexion conexion = new Conexion();
     private Connection con = conexion.getConnection();
 
@@ -42,7 +42,9 @@ public class ControlSesionAdmin implements ActionListener {
            ControlRegistro controlRegistro = new ControlRegistro();
             view.dispose();
         } else if (e.getSource() == view.jGestionar) {
-            // Agregar lógica para gestionar inventario
+            ControlGestionarInventario controlGestionarInventario = new ControlGestionarInventario();
+            controlGestionarInventario.view.setVisible(true);
+            view.dispose();
         }
     }
 }

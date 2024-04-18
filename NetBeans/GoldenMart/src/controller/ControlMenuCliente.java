@@ -8,7 +8,7 @@ import java.awt.event.*;
 import javax.swing.JOptionPane;
 /**
  *
- * @author ASD
+ * @author Javs
  */
 public class ControlMenuCliente implements ActionListener{
     SesionAdmin view;

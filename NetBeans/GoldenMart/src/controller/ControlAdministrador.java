@@ -55,8 +55,8 @@ public void actionPerformed(ActionEvent e) {
     if (e.getSource() ==view.jIngresar) {
         String user = view.jUsuario.getText(); // Obtiene el usuario electrónico del campo de texto
         String contrasenia = view.jContrasena.getText(); // Obtiene la contraseña del campo de texto
-        System.out.println("Usuario ingresado: " + user);
-            System.out.println("Contraseña ingresada: " + contrasenia);
+        //System.out.println("Usuario ingresado: " + user);
+          //  System.out.println("Contraseña ingresada: " + contrasenia);
          if (user.isEmpty() || contrasenia.isEmpty()) {
          JOptionPane optionPane = new JOptionPane("Por favor ingrese usuario y contraseña", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{ "Aceptar" });
          JDialog dialog = optionPane.createDialog("Error");
@@ -65,12 +65,17 @@ public void actionPerformed(ActionEvent e) {
          } else {
                 boolean accesoAutorizado = admin.verificarCredenciales(user, contrasenia);
                 if (accesoAutorizado) {
-                    JOptionPane.showMessageDialog(null, "Acceso autorizado");
+                    JOptionPane optionPane = new JOptionPane("Acceso autorizado", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"});
+                    JDialog dialog = optionPane.createDialog("Exíto");
+                    dialog.setVisible(true);
                     ControlSesionAdmin controlSesionAdmin = new ControlSesionAdmin();
                     controlSesionAdmin.view.setVisible(true);
                     this.view.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Acceso denegado");
+                    // Para el acceso denegado
+                    JOptionPane optionPane = new JOptionPane("Acceso denegado", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"});
+                    JDialog dialog = optionPane.createDialog("Error");
+                    dialog.setVisible(true);
                 }
         }
     }
