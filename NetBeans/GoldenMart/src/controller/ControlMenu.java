@@ -24,7 +24,8 @@ public class ControlMenu implements ActionListener{
         Object source = e.getSource();
         
         if(source == view.button_cajero){
-            ControlMenuCliente controlMenuCliente = new ControlMenuCliente();
+            ControlRealizarVenta controlRealizarVenta = new ControlRealizarVenta();
+            controlRealizarVenta.view.setVisible(true);
             view.dispose();
         }
         else if(source == view.button_administrador){
