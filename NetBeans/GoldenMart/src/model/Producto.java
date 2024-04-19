@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
+import javax.swing.JTextArea;
 
 
 public class Producto {
@@ -310,5 +311,51 @@ public class Producto {
         
         return productos;
     }
+    
+    public void agregarVenta(int idProducto, JTextArea textArea) {
+    String sql = "UPDATE producto SET Cantidad_Disponible = Cantidad_Disponible - 1 WHERE IdProducto = ? AND Cantidad_Disponible > 0";
+
+    try (Connection con = conexion.getConnection();
+         PreparedStatement pstmt = con.prepareStatement(sql)) {
+        pstmt.setInt(1, idProducto);
+        int filasActualizadas = pstmt.executeUpdate();
+        if (filasActualizadas > 0) {
+            Producto producto = obtenerProductoPorId(idProducto); // Obtener información del producto
+            // Agregar el nombre y precio del producto al JTextArea
+            textArea.append(producto.getNombre() + " - Precio: " + producto.getPrecio() + "\n");
+            JOptionPane.showMessageDialog(null, "Producto agregado al carrito. Se ha disminuido la cantidad disponible del producto.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay suficiente stock disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL para agregar venta.", "Error", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+    }
+}
+
+    public void eliminarVenta(int idProducto, JTextArea textArea) {
+        String sql = "UPDATE producto SET Cantidad_Disponible = Cantidad_Disponible + 1 WHERE IdProducto = ? AND Cantidad_Disponible < 50"; // Considerando que la cantidad máxima es 50
+
+        try (Connection con = conexion.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, idProducto);
+            int filasActualizadas = pstmt.executeUpdate();
+            if (filasActualizadas > 0) {
+                Producto producto = obtenerProductoPorId(idProducto); // Obtener información del producto
+                // Remover el nombre y precio del producto del JTextArea
+                String textoARemover = producto.getNombre() + " - Precio: " + producto.getPrecio() + "\n";
+                String textoActual = textArea.getText();
+                textArea.setText(textoActual.replace(textoARemover, ""));
+                JOptionPane.showMessageDialog(null, "Producto eliminado del carrito. Se ha incrementado la cantidad disponible del producto.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se puede agregar más de la cantidad máxima disponible.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL para eliminar venta.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    }
+    
+
 }
 

@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -78,7 +79,7 @@ public class ControlRealizarVenta implements ActionListener {
         if (e.getSource() == view.jPago) {
             // Abre la ventana para registrar un nuevo producto
            // ControlRegistro controlRegistro = new ControlRegistro();
-            view.dispose();
+           // view.dispose();
         } else if (e.getSource() == view.jBuscar) {
             String textoBusqueda = view.jBusqueda.getText();
             //System.out.println("Texto de búsqueda: " + textoBusqueda);
@@ -230,4 +231,32 @@ public class ControlRealizarVenta implements ActionListener {
     tabla.getColumnModel().getColumn(7).setCellRenderer(new ComponentCellRenderer());
     tabla.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
 }
+    
+    public void agregarContenido(JTextArea jTicket, int idTicket) {
+        // Creamos un StringBuilder para construir el contenido del JTextArea
+        StringBuilder contenido = new StringBuilder();
+
+        // Agregamos el logo de la empresa
+        ImageIcon logo = new ImageIcon("/imagenes/logoticket.png"); // Reemplaza la ruta con la ubicación de tu archivo de imagen
+        contenido.append(logo).append("\n\n");
+
+        // Agregamos el ID del ticket
+        contenido.append("Ticket ID: ").append(idTicket).append("\n\n");
+
+        // Agregamos la fecha actual
+        contenido.append("Fecha: [Fecha actual aquí]\n");
+
+        // Agregamos la hora actual
+        contenido.append("Hora: [Hora actual aquí]\n\n");
+
+        // Agregamos los productos y el total debajo de estos elementos.
+        contenido.append("Productos:\n");
+        // Agrega aquí la lista de productos
+        
+        // Agregamos el total
+        contenido.append("\nTotal: [Total aquí]\n");
+
+        // Establecemos el contenido en el JTextArea
+        jTicket.setText(contenido.toString());
+    }
 }

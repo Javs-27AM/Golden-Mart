@@ -58,7 +58,7 @@ public class ControlBuscarVenta {
             model.addColumn("Eliminar");
 
             for (Producto producto : productos) {
-                JButton botonAgregar = new JButton("Agregar"); // Cambiado a botón "Agregar"
+                JButton botonAgregar = new JButton("Agregar al Carrito"); // Cambiado a botón "Agregar"
                 JButton botonEliminar = new JButton("Eliminar");
 
                 String rutaImagen = producto.getImagen();
