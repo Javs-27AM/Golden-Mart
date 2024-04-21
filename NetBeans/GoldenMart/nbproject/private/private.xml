@@ -14,10 +14,10 @@
         <group>
             <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/view/RealizarVenta.java</file>
             <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlRealizarVenta.java</file>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlBuscarVenta.java</file>
             <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlGestionarInventario.java</file>
             <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlModificar.java</file>
             <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/model/Producto.java</file>
+            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlSesionAdmin.java</file>
             <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlEliminar.java</file>
         </group>
     </open-files>

@@ -158,7 +158,9 @@ public class Producto {
         pstmt.setInt(7, cantidadDisponible);
         pstmt.setString(8, descripcion);
         pstmt.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Producto insertado correctamente en la base de datos.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane optionPane = new JOptionPane("Producto insertado correctamente en la base de datos.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"}, "Aceptar");
+        JDialog dialog = optionPane.createDialog("Éxito");
+        dialog.setVisible(true);
     } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL para insertar un nuevo producto.", "Error", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
@@ -181,7 +183,9 @@ public class Producto {
         pstmt.setInt(9, idProducto); // Establecer el ID como último parámetro
         int filasActualizadas = pstmt.executeUpdate();
         if (filasActualizadas > 0) {
-            JOptionPane.showMessageDialog(null, "Producto modificado correctamente en la base de datos.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane optionPane = new JOptionPane("Producto modificado correctamente en la base de datos.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"}, "Aceptar");
+            JDialog dialog = optionPane.createDialog("Éxito");
+            dialog.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró ningún producto con el ID especificado.", "Error", JOptionPane.ERROR_MESSAGE);
         }

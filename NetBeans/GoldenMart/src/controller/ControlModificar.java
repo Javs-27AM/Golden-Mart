@@ -192,6 +192,9 @@ import view.ModificarProducto;
                 view.jImagen.setText("");
                 view.jCantidad.setText("");
                 view.jDescripcion.setText("");
+                ControlGestionarInventario controlGestionarInventario = new ControlGestionarInventario();
+                controlGestionarInventario.view.setVisible(true);
+                view.dispose();
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(view, "Por favor ingrese valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
             }
