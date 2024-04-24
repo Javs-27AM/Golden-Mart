@@ -103,5 +103,5 @@ public class ProductoTest {
     // Si llegamos aquí sin lanzar una excepción, la prueba pasa
     assertTrue(true);
     }
-
+    
 }

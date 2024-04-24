@@ -46,6 +46,7 @@ public class GestionarInventario extends javax.swing.JFrame {
         jActualizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gestionar Inventario");
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/GoldenMart_logito.png"))); // NOI18N
 

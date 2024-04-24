@@ -1,5 +1,11 @@
 package controller;
 
+/*
+ *
+ * @author Javs
+ */
+
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -9,25 +15,34 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import model.Producto;
+import model.Venta;
 import view.RealizarVenta;
 
 public class ControlRealizarVenta implements ActionListener {
 
     public RealizarVenta view;
     public Producto productoModel;
+    public Venta ventaModel;
     private DefaultTableModel model;
     private final int IMAGEN_COLUMN_WIDTH = 125;
     private final int IMAGEN_COLUMN_HEIGHT = 125;
+    private List<Producto> productosVendidos = new ArrayList<>();
 
     public ControlRealizarVenta() {
         this.view = new RealizarVenta();
@@ -54,18 +69,21 @@ public class ControlRealizarVenta implements ActionListener {
             int columna = view.jProducto.columnAtPoint(e.getPoint());
             if (fila >= 0 && columna == 7) { // Columna de Agregar
                 int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
-               // ControlModificar controlModificar = new ControlModificar(idProducto);
-                //controlModificar.view.setVisible(true);
-                view.dispose();
+                 ControlAgregarVenta controlAgregarVenta = new ControlAgregarVenta(idProducto, view.jTicket, productosVendidos);
+                 agregarContenido(productosVendidos, view.jTicket);
+                //view.dispose();
             } else if (fila >= 0 && columna == 8) { // Columna de Eliminar
                 int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
-                //ControlEliminar controlEliminar = new ControlEliminar(idProducto);
-                view.dispose();
+                // Suponiendo que tienes acceso a la lista productosVendidos y al textArea jTicket desde el contexto donde se crea una instancia de ControlEliminarVenta
+                ControlEliminarVenta controlEliminarVenta = new ControlEliminarVenta(idProducto, productosVendidos);
+                eliminarContenido(productosVendidos, view.jTicket);
+                
             }
         }
     });
 
         this.productoModel = new Producto();
+        this.ventaModel = new Venta();
         cargarProductos();
     }
 
@@ -232,31 +250,128 @@ public class ControlRealizarVenta implements ActionListener {
     tabla.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
 }
     
-    public void agregarContenido(JTextArea jTicket, int idTicket) {
-        // Creamos un StringBuilder para construir el contenido del JTextArea
-        StringBuilder contenido = new StringBuilder();
-
-        // Agregamos el logo de la empresa
-        ImageIcon logo = new ImageIcon("/imagenes/logoticket.png"); // Reemplaza la ruta con la ubicación de tu archivo de imagen
-        contenido.append(logo).append("\n\n");
-
-        // Agregamos el ID del ticket
-        contenido.append("Ticket ID: ").append(idTicket).append("\n\n");
-
-        // Agregamos la fecha actual
-        contenido.append("Fecha: [Fecha actual aquí]\n");
-
-        // Agregamos la hora actual
-        contenido.append("Hora: [Hora actual aquí]\n\n");
-
-        // Agregamos los productos y el total debajo de estos elementos.
-        contenido.append("Productos:\n");
-        // Agrega aquí la lista de productos
+    public void agregarContenido(List<Producto> productosVendidos, JTextArea jTicket) {
+        // Crear un panel para agregar elementos de forma más flexible
+        JPanel panelContenido = new JPanel();
+        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
         
-        // Agregamos el total
-        contenido.append("\nTotal: [Total aquí]\n");
+         panelContenido.removeAll();
+        // Agregar el logo de la empresa
+        ImageIcon logo = new ImageIcon(getClass().getResource("/imagenes/logoticket.png"));
+        JLabel logoLabel = new JLabel(logo);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(logoLabel);
 
-        // Establecemos el contenido en el JTextArea
-        jTicket.setText(contenido.toString());
+        // Agregar la fecha actual
+        JLabel fechaLabel = new JLabel("Fecha: " + LocalDate.now());
+        fechaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(fechaLabel);
+
+        // Agregar la hora actual
+        LocalTime horaActual = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String horaFormateada = horaActual.format(formatter);
+        JLabel horaLabel = new JLabel("Hora: " + horaFormateada);
+        horaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(horaLabel);
+
+        // Agregar los productos vendidos
+        JLabel productosLabel = new JLabel("Productos:");
+        productosLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(productosLabel);
+
+        for (Producto producto : productosVendidos) {
+            JLabel productoLabel = new JLabel(producto.getNombre() + " - Precio: $" + producto.getPrecio());
+            productoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelContenido.add(productoLabel);
+        }
+
+        // Calcular el total
+        float total = 0;
+        for (Producto producto : productosVendidos) {
+            total += producto.getPrecio();
+        }
+
+        // Agregar el total
+        JLabel totalLabel = new JLabel("Total: $" + total);
+        totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(totalLabel);
+
+        // Limpiar el JTextArea y agregar el contenido del panel
+        jTicket.removeAll();
+        jTicket.setLayout(new BorderLayout());
+        jTicket.add(panelContenido, BorderLayout.CENTER);
+        jTicket.revalidate();
+        jTicket.repaint();
     }
+    
+    
+    public void eliminarContenido(List<Producto> productosVendidos, JTextArea jTicket) {
+    // Crear un panel para agregar elementos de forma más flexible
+    JPanel panelContenido = new JPanel();
+    panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+    
+    panelContenido.removeAll();
+    // Agregar el logo de la empresa
+    ImageIcon logo = new ImageIcon(getClass().getResource("/imagenes/logoticket.png"));
+    JLabel logoLabel = new JLabel(logo);
+    logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(logoLabel);
+
+    // Agregar la fecha actual
+    JLabel fechaLabel = new JLabel("Fecha: " + LocalDate.now());
+    fechaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(fechaLabel);
+
+    // Agregar la hora actual
+    LocalTime horaActual = LocalTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    String horaFormateada = horaActual.format(formatter);
+    JLabel horaLabel = new JLabel("Hora: " + horaFormateada);
+    horaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(horaLabel);
+
+    // Agregar los productos vendidos
+    JLabel productosLabel = new JLabel("Productos:");
+    productosLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(productosLabel);
+
+    for (Producto producto : productosVendidos) {
+        JLabel productoLabel = new JLabel(producto.getNombre() + " - Precio: $" + producto.getPrecio());
+        productoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(productoLabel);
+    }
+
+    // Calcular el total
+    float total = 0;
+    for (Producto producto : productosVendidos) {
+        total += producto.getPrecio();
+    }
+
+    // Agregar el total
+    JLabel totalLabel = new JLabel("Total: $" + total);
+    totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(totalLabel);
+
+    // Limpiar el JTextArea y agregar el contenido del panel
+    jTicket.removeAll();
+    jTicket.setLayout(new BorderLayout());
+    jTicket.add(panelContenido, BorderLayout.CENTER);
+    jTicket.revalidate();
+    jTicket.repaint();
+}
+
+
+    public void completarVenta(List<Producto> productosVendidos, JTextArea jTicket) {
+    // Lógica para completar la venta, como actualizar el stock, etc.
+
+    // Después de completar la venta, generas el contenido del ticket
+    agregarContenido(productosVendidos, jTicket);
+}
+    
+    
+    public List<Producto> getProductosVendidos() {
+        return productosVendidos;
+    }
+    
 }

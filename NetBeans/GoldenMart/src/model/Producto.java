@@ -12,9 +12,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JTextArea;
@@ -32,6 +35,9 @@ public class Producto {
     private String marca;
     private int cantidadDisponible;
     private String imagen;
+    private List<Producto> productosVendidos = new ArrayList<>();
+    private Map<Integer, Integer> contadorProductosVendidos = new HashMap<>();
+
     
     
     public Producto(String nombre, String marca, String contenidoNeto, String categoria, float precio, String imagen, int cantidadDisponible, String descripcion) {
@@ -123,10 +129,10 @@ public class Producto {
     }
 
     public void setCantidadDisponible(int cantidadDisponible) {
-        if (cantidadDisponible >= 0) {
+        if (cantidadDisponible > 0) {
             this.cantidadDisponible = cantidadDisponible;
         } else {
-            JOptionPane.showMessageDialog(null, "La cantidad disponible debe ser mayor o igual a cero.", "Error", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "La cantidad disponible debe ser mayor a cero.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -137,6 +143,10 @@ public class Producto {
     public String getImagen() {
         return imagen;
     }
+
+    public List<Producto> getProductosVendidos() {
+    return productosVendidos;
+}
 
     // Método para insertar un nuevo producto en la base de datos
     public void insertarProducto() {
@@ -167,6 +177,7 @@ public class Producto {
     }
 }
     
+    
     public void modificarProducto(int idProducto, String nombre, String marca, String contenidoNeto, String categoria, float precio, String imagen, int cantidadDisponible, String descripcion) {
     String sql = "UPDATE producto SET Nombre = ?, Marca = ?, ContenidoNeto = ?, Categoria = ?, Precio = ?, Imagen = ?, Cantidad_Disponible = ?, Descripcion = ? WHERE IdProducto = ?";
     
@@ -196,7 +207,6 @@ public class Producto {
 }
 
 
-
     public void eliminarProducto(int idProducto) {
     String sql = "UPDATE producto SET Eliminado = 1 WHERE IdProducto = ?";
     
@@ -216,6 +226,7 @@ public class Producto {
             ex.printStackTrace();
         }
 }
+    
     
     public List<Producto> buscarProductos(String textoBusqueda) {
     List<Producto> productos = new ArrayList<>();
@@ -250,7 +261,7 @@ public class Producto {
     return productos;
 }
 
-
+    
     public Producto obtenerProductoPorId(int idProducto) {
     String sql = "SELECT * FROM producto WHERE IdProducto = ? AND Eliminado = 0"; // Solo productos no eliminados
     
@@ -284,6 +295,7 @@ public class Producto {
     }
 }
 
+    
     public List<Producto> listaProductos() {
         List<Producto> productos = new ArrayList<>();
          String sql = "SELECT * FROM producto WHERE Eliminado = 0"; // Selecciona solo los productos no eliminados
@@ -316,50 +328,124 @@ public class Producto {
         return productos;
     }
     
-    public void agregarVenta(int idProducto, JTextArea textArea) {
-    String sql = "UPDATE producto SET Cantidad_Disponible = Cantidad_Disponible - 1 WHERE IdProducto = ? AND Cantidad_Disponible > 0";
+    
+    public void agregarVenta(int idProducto, JTextArea jTicket, List<Producto> productosVendidos) {
+        Producto producto = obtenerProductoPorId(idProducto);
+        if (producto != null) {
+           
+            // Verificar si hay suficiente cantidad disponible del producto
+            if (producto.getCantidadDisponible() > 0) {
+               
+                int nuevaCantidadDisponible = producto.getCantidadDisponible() - 1;
 
-    try (Connection con = conexion.getConnection();
-         PreparedStatement pstmt = con.prepareStatement(sql)) {
-        pstmt.setInt(1, idProducto);
-        int filasActualizadas = pstmt.executeUpdate();
-        if (filasActualizadas > 0) {
-            Producto producto = obtenerProductoPorId(idProducto); // Obtener información del producto
-            // Agregar el nombre y precio del producto al JTextArea
-            textArea.append(producto.getNombre() + " - Precio: " + producto.getPrecio() + "\n");
-            JOptionPane.showMessageDialog(null, "Producto agregado al carrito. Se ha disminuido la cantidad disponible del producto.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                actualizarCantidadDisponibleEnBD(idProducto, nuevaCantidadDisponible);
+
+                // Agregar el producto a la lista de productos vendidos
+                productosVendidos.add(producto);
+
+                // Agregar el nombre y el precio del producto al textArea
+                // jTicket.append(producto.getNombre() + " - Precio: $" + producto.getPrecio() + "\n");
+            } else {
+                // Mostrar un mensaje de error si el producto está agotado
+                JOptionPane.showMessageDialog(null, "El producto seleccionado está agotado.", "Error", JOptionPane.ERROR_MESSAGE);
+               }
         } else {
-            JOptionPane.showMessageDialog(null, "No hay suficiente stock disponible.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL para agregar venta.", "Error", JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
+            // Mostrar un mensaje de error si el producto no está disponible
+            JOptionPane.showMessageDialog(null, "El producto seleccionado no está disponible en este momento.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
     }
-}
 
-    public void eliminarVenta(int idProducto, JTextArea textArea) {
-        String sql = "UPDATE producto SET Cantidad_Disponible = Cantidad_Disponible + 1 WHERE IdProducto = ? AND Cantidad_Disponible < 50"; // Considerando que la cantidad máxima es 50
+
+// Método para actualizar la cantidad disponible en la base de datos
+    public void actualizarCantidadDisponibleEnBD(int idProducto, int nuevaCantidad) {
+        String sql = "UPDATE producto SET Cantidad_Disponible = ? WHERE IdProducto = ?";
 
         try (Connection con = conexion.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setInt(1, idProducto);
-            int filasActualizadas = pstmt.executeUpdate();
-            if (filasActualizadas > 0) {
-                Producto producto = obtenerProductoPorId(idProducto); // Obtener información del producto
-                // Remover el nombre y precio del producto del JTextArea
-                String textoARemover = producto.getNombre() + " - Precio: " + producto.getPrecio() + "\n";
-                String textoActual = textArea.getText();
-                textArea.setText(textoActual.replace(textoARemover, ""));
-                JOptionPane.showMessageDialog(null, "Producto eliminado del carrito. Se ha incrementado la cantidad disponible del producto.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "No se puede agregar más de la cantidad máxima disponible.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            pstmt.setInt(1, nuevaCantidad);
+            pstmt.setInt(2, idProducto);
+            pstmt.executeUpdate();
+           // System.out.println("Cantidad disponible del producto actualizada en la base de datos.");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL para eliminar venta.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al actualizar la cantidad disponible del producto en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
+    }
+
+
+
+
+   public void eliminarVenta(int idProducto, List<Producto> productosVendidos) {
+    // Verificar si la lista de productos vendidos está vacía
+    if (productosVendidos.isEmpty()) {
+        // Mostrar un mensaje de error si no hay productos en el carrito
+        JOptionPane.showMessageDialog(null, "No hay productos en el carrito.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Verificar si el producto está en la lista de productos vendidos
+    boolean productoEnLista = false;
+    for (Producto p : productosVendidos) {
+        if (p.getIdProducto() == idProducto) {
+            productoEnLista = true;
+            break;
+        }
+    }
+
+    if (!productoEnLista) {
+        // Mostrar un mensaje de error si el producto no está en la lista
+        JOptionPane.showMessageDialog(null, "El producto seleccionado no está en la lista.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Si el producto está en la lista, aumentar en uno la cantidad disponible del producto
+    Producto producto = obtenerProductoPorId(idProducto);
+    if (producto != null) {
+        // Sumar uno a la cantidad disponible del producto
+        int nuevaCantidadDisponible = producto.getCantidadDisponible() + 1;
+
+        // Actualizar la cantidad disponible en la base de datos
+        actualizarCantidadDisponibleEnBD(idProducto, nuevaCantidadDisponible);
+
+        // Iterar sobre la lista de productos vendidos
+        Iterator<Producto> iter = productosVendidos.iterator();
+        while (iter.hasNext()) {
+            Producto p = iter.next();
+            // Si el ID del producto coincide con el ID especificado
+            if (p.getIdProducto() == idProducto) {
+                // Eliminar el producto de la lista
+                iter.remove();
+                break; // Salir del bucle una vez que se haya eliminado el producto
+            }
+        }
+    }
+}
+
+    // Función para obtener los productos vendidos
+    public List<Producto> productosVendidos() {
+        List<Producto> listaProductosVendidos = new ArrayList<>();
+        String sql = "SELECT Nombre, Precio, Cantidad_Disponible FROM producto WHERE Eliminado = 0";
+
+        try (Connection con = conexion.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setNombre(rs.getString("Nombre"));
+                producto.setPrecio(rs.getFloat("Precio"));
+                producto.setCantidadDisponible(rs.getInt("Cantidad_Disponible"));
+                productosVendidos.add(producto);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener la lista de productos vendidos.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+
+        return listaProductosVendidos;
     }
     
 
 }
 
+    

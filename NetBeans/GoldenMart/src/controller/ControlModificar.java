@@ -200,6 +200,8 @@ import view.ModificarProducto;
             }
         } else if (e.getSource() == view.jCancelar) {
             // Limpiar los campos del formulario
+            ControlGestionarInventario controlGestionarInventario = new ControlGestionarInventario();
+            controlGestionarInventario.view.setVisible(true);
             view.jIdProducto.setText(""); 
             view.jNombre.setText("");
             view.jMarca.setText("");

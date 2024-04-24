@@ -1,5 +1,8 @@
 package controller;
-
+/*
+ *
+ * @author Javs
+ */
 import java.awt.event.*;
 import javax.swing.JOptionPane;
 import model.Producto;

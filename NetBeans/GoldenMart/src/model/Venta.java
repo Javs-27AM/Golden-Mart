@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 /**
  *
  * @author Javs
  */
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,26 +21,29 @@ public class Venta {
     private Date fechaVenta;
     private Time horaVenta;
     private float total;
-    private int cantidadProductosVendidos;
+    private List<Producto> productosVendidos;
 
     public Venta(int idVenta, Date fechaVenta, Time horaVenta, float total) {
         this.idVenta = idVenta;
         this.fechaVenta = fechaVenta;
         this.horaVenta = horaVenta;
         this.total = total;
-        this.cantidadProductosVendidos=0;
+        this.productosVendidos = new ArrayList<>();
     }
 
     public Venta(Date fechaVenta, Time horaVenta, float total) {
         this.fechaVenta = fechaVenta;
         this.horaVenta = horaVenta;
         this.total = total;
+        this.productosVendidos = new ArrayList<>();
     }
     
     public Venta(){
-
+        this.productosVendidos = new ArrayList<>();
     }
+
     // Getters y setters para los atributos de la clase Venta
+    // Métodos de la clase Venta
 
     public int getIdVenta() {
         return idVenta;
@@ -79,7 +77,17 @@ public class Venta {
         this.total = total;
     }
 
-    // Métodos de la clase Venta
+    public List<Producto> getProductosVendidos() {
+        return productosVendidos;
+    }
+
+    public void agregarProducto(Producto producto) {
+        productosVendidos.add(producto);
+    }
+
+    public void eliminarProducto(Producto producto) {
+        productosVendidos.remove(producto);
+    }
 
     public void insertarVentaEnBD(Venta venta) {
         String sql = "INSERT INTO Venta (FechaVenta, HoraVenta, Total) VALUES (?, ?, ?)";
@@ -122,7 +130,9 @@ public class Venta {
         
         return ventas;
     }
+
     public void incrementarCantidadProductosVendidos(int cantidad) {
-        this.cantidadProductosVendidos += cantidad;
+        // Este método podría ser útil para llevar un registro de la cantidad
+        // total de productos vendidos en la venta, si lo necesitas.
     }
 }
