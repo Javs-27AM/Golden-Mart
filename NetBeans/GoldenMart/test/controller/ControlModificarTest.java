@@ -1,11 +1,8 @@
 package controller;
 
-import controller.ControlModificar;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import model.Producto;
 
 public class ControlModificarTest {

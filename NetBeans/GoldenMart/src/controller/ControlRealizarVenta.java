@@ -111,7 +111,8 @@ public class ControlRealizarVenta implements ActionListener {
             this.view.dispose();
         }
         else if (e.getSource() == view.jCancelar) {
-            cargarProductos();
+              ControlCancelarVenta controlCancelarVenta = new ControlCancelarVenta(productosVendidos);
+             
         }
     }
 

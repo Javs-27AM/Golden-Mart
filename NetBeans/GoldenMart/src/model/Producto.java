@@ -373,9 +373,7 @@ public class Producto {
     }
 
 
-
-
-   public void eliminarVenta(int idProducto, List<Producto> productosVendidos) {
+    public void eliminarVenta(int idProducto, List<Producto> productosVendidos) {
     // Verificar si la lista de productos vendidos está vacía
     if (productosVendidos.isEmpty()) {
         // Mostrar un mensaje de error si no hay productos en el carrito
@@ -420,6 +418,31 @@ public class Producto {
         }
     }
 }
+    
+    
+     public int obtenerCantidadDisponibleInicial(int idProducto) {
+        String sql = "SELECT Cantidad_Disponible FROM producto WHERE IdProducto = ?";
+        int cantidadInicial = -1;
+
+        try (Connection con = conexion.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, idProducto);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    cantidadInicial = rs.getInt("Cantidad_Disponible");
+                } else {
+                    // Mostrar un mensaje de error si no se encuentra el producto
+                    JOptionPane.showMessageDialog(null, "No se encontró ningún producto con el ID especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener la cantidad inicial disponible del producto.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+
+        return cantidadInicial;
+    }
 
     // Función para obtener los productos vendidos
     public List<Producto> productosVendidos() {
