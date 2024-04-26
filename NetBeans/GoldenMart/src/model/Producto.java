@@ -51,6 +51,8 @@ public class Producto {
         this.cantidadDisponible = cantidadDisponible;
         this.descripcion = descripcion;
     }
+   
+    
     public Producto(int idProducto, String nombre, String marca, String contenidoNeto, String categoria, float precio, String imagen, int cantidadDisponible, String descripcion) {
         this.idProducto = idProducto;
         this.nombre = nombre;
@@ -62,6 +64,8 @@ public class Producto {
         this.cantidadDisponible = cantidadDisponible;
         this.descripcion = descripcion;
     }
+    
+    
     public Producto() {
     }
     
@@ -80,7 +84,8 @@ public class Producto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-     public String getContenidoNeto() {
+    
+    public String getContenidoNeto() {
         return contenidoNeto;
     }
 
