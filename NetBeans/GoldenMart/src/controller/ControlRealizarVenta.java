@@ -112,7 +112,7 @@ public class ControlRealizarVenta implements ActionListener {
         }
         else if (e.getSource() == view.jCancelar) {
               ControlCancelarVenta controlCancelarVenta = new ControlCancelarVenta(productosVendidos);
-             
+              eliminarContenido(productosVendidos, view.jTicket);
         }
     }
 
