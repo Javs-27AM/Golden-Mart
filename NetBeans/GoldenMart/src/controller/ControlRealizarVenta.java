@@ -39,6 +39,7 @@ public class ControlRealizarVenta implements ActionListener {
     public RealizarVenta view;
     public Producto productoModel;
     public Venta ventaModel;
+    private float totalVenta; 
     private DefaultTableModel model;
     private final int IMAGEN_COLUMN_WIDTH = 125;
     private final int IMAGEN_COLUMN_HEIGHT = 125;
@@ -95,9 +96,8 @@ public class ControlRealizarVenta implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.jPago) {
-            // Abre la ventana para registrar un nuevo producto
-           // ControlRegistro controlRegistro = new ControlRegistro();
-           // view.dispose();
+           ControlMenuPago controlMenuPago = new ControlMenuPago(getTotalVenta());
+            controlMenuPago.view.setVisible(true);
         } else if (e.getSource() == view.jBuscar) {
             String textoBusqueda = view.jBusqueda.getText();
             //System.out.println("Texto de búsqueda: " + textoBusqueda);
@@ -116,6 +116,7 @@ public class ControlRealizarVenta implements ActionListener {
         }
     }
 
+    
     public void cargarProductos() {
             List<Producto> productos = productoModel.listaProductos();
             model = new DefaultTableModel();
@@ -190,6 +191,7 @@ public class ControlRealizarVenta implements ActionListener {
         }
     }
     
+    
     public void cargarProductos(JTable tabla, String textoBusqueda) {
     List<Producto> productos = (textoBusqueda.isEmpty()) ? productoModel.listaProductos() : productoModel.buscarProductos(textoBusqueda);
     model = new DefaultTableModel();
@@ -250,6 +252,7 @@ public class ControlRealizarVenta implements ActionListener {
     tabla.getColumnModel().getColumn(7).setCellRenderer(new ComponentCellRenderer());
     tabla.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
 }
+   
     
     public void agregarContenido(List<Producto> productosVendidos, JTextArea jTicket) {
         // Crear un panel para agregar elementos de forma más flexible
@@ -288,13 +291,13 @@ public class ControlRealizarVenta implements ActionListener {
         }
 
         // Calcular el total
-        float total = 0;
+         totalVenta  = 0;
         for (Producto producto : productosVendidos) {
-            total += producto.getPrecio();
+            totalVenta  += producto.getPrecio();
         }
 
         // Agregar el total
-        JLabel totalLabel = new JLabel("Total: $" + total);
+        JLabel totalLabel = new JLabel("Total: $" + totalVenta );
         totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelContenido.add(totalLabel);
 
@@ -362,13 +365,10 @@ public class ControlRealizarVenta implements ActionListener {
     jTicket.repaint();
 }
 
-
-    public void completarVenta(List<Producto> productosVendidos, JTextArea jTicket) {
-    // Lógica para completar la venta, como actualizar el stock, etc.
-
-    // Después de completar la venta, generas el contenido del ticket
-    agregarContenido(productosVendidos, jTicket);
-}
+    
+    public float getTotalVenta() {
+        return totalVenta;
+    }
     
     
     public List<Producto> getProductosVendidos() {
