@@ -28,13 +28,14 @@ public class ControlMenuPago implements ActionListener {
             ControlPagoEfectivo controlPagoEfectivo = new ControlPagoEfectivo(totalVenta);
             controlPagoEfectivo.view.setVisible(true);
             this.view.dispose();
-            System.out.println("Total de la venta (efectivo): $" + totalVenta);
+            //System.out.println("Total de la venta (efectivo): $" + totalVenta);
                 
            // realizarPagoEfectivo();
         } else if (e.getSource() == view.button_tarjeta) {
             ControlPagoTarjeta controlPagoTarjeta = new ControlPagoTarjeta(totalVenta);
             controlPagoTarjeta.view.setVisible(true);
-            System.out.println("Total de la venta (efectivo): $" + totalVenta);
+            this.view.dispose();
+            //System.out.println("Total de la venta (efectivo): $" + totalVenta);
                 
             //realizarPagoTarjeta();
         } else if (e.getSource() == view.button_cancelarPago) {
