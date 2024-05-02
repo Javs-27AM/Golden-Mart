@@ -4,17 +4,34 @@
  * and open the template in the editor.
  */
 package view;
+
+import controller.ControlMenuPago;
+import controller.ControlPagoEfectivo;
+
 /**
  *
  * @author Javs
  */
 public class PagoEfectivo extends javax.swing.JFrame {
+    private ControlPagoEfectivo controlador;
+    private ControlMenuPago controladorMenuPago;
+    // Agregar referencia al controlador
+
     /**
      * Creates new form Registro
      */
     public PagoEfectivo() {
         initComponents();
+        this.controladorMenuPago = controladorMenuPago;
         setVisible(true);
+    }
+    
+    public ControlMenuPago getControladorMenuPago() {
+        return controladorMenuPago;
+    }
+    
+    public void setControlador(ControlPagoEfectivo controlador) {
+        this.controlador = controlador;
     }
 
     /**
@@ -150,7 +167,9 @@ public class PagoEfectivo extends javax.swing.JFrame {
     }//GEN-LAST:event_jCambioActionPerformed
 
     private void jPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPagoActionPerformed
-
+        if (controlador != null) {
+            controlador.procesarPago();
+        }
     }//GEN-LAST:event_jPagoActionPerformed
 
 

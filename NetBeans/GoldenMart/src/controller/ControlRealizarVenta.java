@@ -24,6 +24,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -51,8 +52,7 @@ public class ControlRealizarVenta implements ActionListener {
         this.view.jBuscar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
         this.view.jCancelar.addActionListener(this);
-        // Suponiendo que tienes una instancia de ControlBuscar llamada controlBuscar
-
+        
         this.view.jBusqueda.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -72,10 +72,8 @@ public class ControlRealizarVenta implements ActionListener {
                 int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
                  ControlAgregarVenta controlAgregarVenta = new ControlAgregarVenta(idProducto, view.jTicket, productosVendidos);
                  agregarContenido(productosVendidos, view.jTicket);
-                //view.dispose();
             } else if (fila >= 0 && columna == 8) { // Columna de Eliminar
                 int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
-                // Suponiendo que tienes acceso a la lista productosVendidos y al textArea jTicket desde el contexto donde se crea una instancia de ControlEliminarVenta
                 ControlEliminarVenta controlEliminarVenta = new ControlEliminarVenta(idProducto, productosVendidos);
                 eliminarContenido(productosVendidos, view.jTicket);
                 
@@ -96,23 +94,29 @@ public class ControlRealizarVenta implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.jPago) {
-           ControlMenuPago controlMenuPago = new ControlMenuPago(getTotalVenta());
+            if (getTotalVenta() == 0) {
+            // Mostrar mensaje de error
+            JOptionPane optionPane = new JOptionPane("No hay productos en el carrito.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{ "Aceptar" });
+            optionPane.createDialog(null, "Error").setVisible(true);
+            } else {
+            // Llamar al controlador correspondiente (pago con tarjeta en este caso)
+            ControlMenuPago controlMenuPago = new ControlMenuPago(getTotalVenta(),this);
             controlMenuPago.view.setVisible(true);
+            //reiniciarControlador();
+        }
         } else if (e.getSource() == view.jBuscar) {
             String textoBusqueda = view.jBusqueda.getText();
-            //System.out.println("Texto de búsqueda: " + textoBusqueda);
-            // Aquí instanciamos el controlador ControlBuscar
-            ControlBuscarVenta controlBuscarVenta = new ControlBuscarVenta(view, productoModel);
-            // Llamamos al método cargarProductos del controlador ControlBuscar
+            ControlBuscarVenta controlBuscarVenta = new ControlBuscarVenta(view, productoModel);         
             controlBuscarVenta.cargarProductos(view.jProducto, textoBusqueda);
         } else if (e.getSource() == view.jRegresar) {
-            ControlMenu controlMenu = new ControlMenu(); // Crear una instancia del controlador del menú
+            ControlMenu controlMenu = new ControlMenu();
             controlMenu.view.setVisible(true); 
             this.view.dispose();
         }
         else if (e.getSource() == view.jCancelar) {
               ControlCancelarVenta controlCancelarVenta = new ControlCancelarVenta(productosVendidos);
               eliminarContenido(productosVendidos, view.jTicket);
+              totalVenta = 0;
         }
     }
 
@@ -375,4 +379,13 @@ public class ControlRealizarVenta implements ActionListener {
         return productosVendidos;
     }
     
+    
+    public void reiniciarControlador() {
+        productosVendidos.clear(); // Limpiar la lista de productos vendidos
+        totalVenta = 0; // Reiniciar el total de la venta
+        cargarProductos(); // Recargar los productos en la vista
+        view.jTicket.removeAll(); // Limpiar el área de ticket
+        view.jTicket.revalidate();
+        view.jTicket.repaint();
+    }
 }

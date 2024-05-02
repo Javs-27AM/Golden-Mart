@@ -10,37 +10,42 @@ import java.awt.event.*;
  * @author Javs
  */
 public class ControlMenuPago implements ActionListener {
-    MenuPago view;
+    public MenuPago view;
     private float totalVenta;
+    public ControlRealizarVenta controlRealizarVenta;
 
-    public ControlMenuPago(float totalVenta) {
+    /**
+     *
+     * @param totalVenta
+     * @param controlRealizarVenta
+     */
+    public ControlMenuPago(float totalVenta, ControlRealizarVenta controlRealizarVenta) {
         this.view = new MenuPago();
         this.view.button_efectivo.addActionListener(this);
         this.view.button_tarjeta.addActionListener(this);
         this.view.button_cancelarPago.addActionListener(this);
         this.totalVenta = totalVenta;
+        this.controlRealizarVenta = controlRealizarVenta;
+        
     }
 
     public void actionPerformed(ActionEvent e) {
         
 
         if (e.getSource() == view.button_efectivo) {
-            ControlPagoEfectivo controlPagoEfectivo = new ControlPagoEfectivo(totalVenta);
+            ControlPagoEfectivo controlPagoEfectivo = new ControlPagoEfectivo(totalVenta, controlRealizarVenta);
             controlPagoEfectivo.view.setVisible(true);
             this.view.dispose();
-            //System.out.println("Total de la venta (efectivo): $" + totalVenta);
-                
-           // realizarPagoEfectivo();
         } else if (e.getSource() == view.button_tarjeta) {
-            ControlPagoTarjeta controlPagoTarjeta = new ControlPagoTarjeta(totalVenta);
+            ControlPagoTarjeta controlPagoTarjeta = new ControlPagoTarjeta(totalVenta, controlRealizarVenta);
             controlPagoTarjeta.view.setVisible(true);
             this.view.dispose();
-            //System.out.println("Total de la venta (efectivo): $" + totalVenta);
-                
-            //realizarPagoTarjeta();
         } else if (e.getSource() == view.button_cancelarPago) {
-            // Aquí irá la lógica para cancelar el pago
-            //cancelarPago();
+            view.dispose();
         }
+    }
+    
+    public void cerrarVentana() {
+        view.dispose();
     }
 }

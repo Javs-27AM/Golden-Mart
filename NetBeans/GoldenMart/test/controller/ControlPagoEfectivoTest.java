@@ -22,15 +22,26 @@ public class ControlPagoEfectivoTest {
     private PagoEfectivo pagoEfectivo;
     private ControlPagoEfectivo controlPagoEfectivo;
     private float totalVenta;
+    public ControlRealizarVenta controlRealizarVenta;
 
     @Before
     public void setUp() {
         totalVenta = 100.0f; // Total de la venta ficticio para el test
         pagoEfectivo = new PagoEfectivo();
-        controlPagoEfectivo = new ControlPagoEfectivo(totalVenta);
+        controlPagoEfectivo = new ControlPagoEfectivo(totalVenta, controlRealizarVenta);
         controlPagoEfectivo.view = pagoEfectivo;
     }
 
+    @Test
+    public void testProcesarPago() {
+        System.out.println("procesarPago");
+        float totalVenta = 100.0f;
+        ControlRealizarVenta controlRealizarVenta = null;
+        ControlPagoEfectivo instance = new ControlPagoEfectivo(totalVenta, controlRealizarVenta);
+        // Agregar aquí los casos de prueba para el método procesarPago()
+        // Asegúrate de cubrir todos los casos posibles y verificar el comportamiento esperado.
+    }
+    
     @Test
     public void testPagoCorrecto() {
         // Establecer la cantidad pagada en el campo de texto

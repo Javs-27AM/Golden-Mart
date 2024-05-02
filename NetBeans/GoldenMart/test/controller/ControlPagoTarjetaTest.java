@@ -18,12 +18,13 @@ import view.PagoTarjeta;
 public class ControlPagoTarjetaTest {
     private ControlPagoTarjeta controlPagoTarjeta;
     public PagoTarjeta pagoTarjeta;
+    public ControlRealizarVenta controlRealizarVenta;
 
     @Before
     public void setUp() {
         // Inicializar el controlador y la vista
         float totalVenta = 100.0f; // Supongamos que el total de la venta es $100
-        controlPagoTarjeta = new ControlPagoTarjeta(totalVenta);
+        controlPagoTarjeta = new ControlPagoTarjeta(totalVenta, controlRealizarVenta);
         pagoTarjeta = controlPagoTarjeta.view;
     }
 
