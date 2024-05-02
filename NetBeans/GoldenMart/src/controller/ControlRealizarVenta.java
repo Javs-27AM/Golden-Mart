@@ -15,6 +15,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +25,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -80,6 +83,27 @@ public class ControlRealizarVenta implements ActionListener {
             }
         }
     });
+        
+        this.view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.view.addWindowListener(new WindowAdapter() {
+        public void windowClosing(WindowEvent e) {
+            if (getTotalVenta() > 0) {
+                int opcion = JOptionPane.showOptionDialog(null, "¿Desea cancelar la venta actual?", "Cancelar Venta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "No");
+                if (opcion == JOptionPane.YES_OPTION) {
+                    ControlCancelarVenta controlCancelarVenta = new ControlCancelarVenta(productosVendidos);
+                    eliminarContenido(productosVendidos, view.jTicket);
+                    totalVenta = 0;
+                    ControlMenu controlMenu = new ControlMenu();
+                    controlMenu.view.setVisible(true); 
+                    view.dispose();
+                }
+            } else {
+                ControlMenu controlMenu = new ControlMenu();
+                controlMenu.view.setVisible(true); 
+                view.dispose();
+            }
+        }
+    });
 
         this.productoModel = new Producto();
         this.ventaModel = new Venta();
@@ -99,20 +123,31 @@ public class ControlRealizarVenta implements ActionListener {
             JOptionPane optionPane = new JOptionPane("No hay productos en el carrito.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{ "Aceptar" });
             optionPane.createDialog(null, "Error").setVisible(true);
             } else {
-            // Llamar al controlador correspondiente (pago con tarjeta en este caso)
             ControlMenuPago controlMenuPago = new ControlMenuPago(getTotalVenta(),this);
             controlMenuPago.view.setVisible(true);
-            //reiniciarControlador();
         }
         } else if (e.getSource() == view.jBuscar) {
             String textoBusqueda = view.jBusqueda.getText();
             ControlBuscarVenta controlBuscarVenta = new ControlBuscarVenta(view, productoModel);         
             controlBuscarVenta.cargarProductos(view.jProducto, textoBusqueda);
         } else if (e.getSource() == view.jRegresar) {
-            ControlMenu controlMenu = new ControlMenu();
-            controlMenu.view.setVisible(true); 
-            this.view.dispose();
-        }
+            if (getTotalVenta() > 0) {
+                int opcion = JOptionPane.showOptionDialog(null, "¿Desea cancelar la venta actual?", "Cancelar Venta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "No");
+                if (opcion == JOptionPane.YES_OPTION) {
+                    ControlCancelarVenta controlCancelarVenta = new ControlCancelarVenta(productosVendidos);
+                    eliminarContenido(productosVendidos, view.jTicket);
+                    totalVenta = 0;
+                    ControlMenu controlMenu = new ControlMenu();
+                    controlMenu.view.setVisible(true); 
+                    this.view.dispose();
+                }
+        } else {
+                ControlMenu controlMenu = new ControlMenu();
+                controlMenu.view.setVisible(true); 
+                this.view.dispose();
+                }
+            }
+
         else if (e.getSource() == view.jCancelar) {
               ControlCancelarVenta controlCancelarVenta = new ControlCancelarVenta(productosVendidos);
               eliminarContenido(productosVendidos, view.jTicket);
