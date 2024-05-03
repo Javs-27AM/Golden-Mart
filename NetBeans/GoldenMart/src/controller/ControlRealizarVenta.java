@@ -22,6 +22,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
@@ -55,6 +57,7 @@ public class ControlRealizarVenta implements ActionListener {
         this.view.jBuscar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
         this.view.jCancelar.addActionListener(this);
+        this.view.jTicket.setEditable(false);
         
         this.view.jBusqueda.addKeyListener(new KeyAdapter() {
             @Override
@@ -86,6 +89,7 @@ public class ControlRealizarVenta implements ActionListener {
         
         this.view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.view.addWindowListener(new WindowAdapter() {
+        @Override
         public void windowClosing(WindowEvent e) {
             if (getTotalVenta() > 0) {
                 int opcion = JOptionPane.showOptionDialog(null, "¿Desea cancelar la venta actual?", "Cancelar Venta", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Sí", "No"}, "No");
@@ -294,16 +298,50 @@ public class ControlRealizarVenta implements ActionListener {
    
     
     public void agregarContenido(List<Producto> productosVendidos, JTextArea jTicket) {
+        
+        String razonSocial = "Golden Mart de S.A de C.V";
+        String direccion = "Calle Principal 123";
+        String ciudad = "Puebla";
+        String estado = "Puebla";
+        String codigoPostal = "73451";
+        String regimenFiscal = "Régimen Fiscal 601-General de Ley Personas Morales";
         // Crear un panel para agregar elementos de forma más flexible
         JPanel panelContenido = new JPanel();
         panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
         
-         panelContenido.removeAll();
+        panelContenido.removeAll();
+
+         
         // Agregar el logo de la empresa
         ImageIcon logo = new ImageIcon(getClass().getResource("/imagenes/logoticket.png"));
         JLabel logoLabel = new JLabel(logo);
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelContenido.add(logoLabel);
+        
+         // Agregar información de la empresa
+        JLabel razonSocialLabel = new JLabel("Razón Social: " + razonSocial);
+        razonSocialLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(razonSocialLabel);
+
+        JLabel direccionLabel = new JLabel("Dirección: " + direccion);
+        direccionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(direccionLabel);
+
+        JLabel ciudadLabel = new JLabel("Ciudad: " + ciudad);
+        ciudadLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(ciudadLabel);
+
+        JLabel estadoLabel = new JLabel("Estado: " + estado);
+        estadoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(estadoLabel);
+
+        JLabel codigoPostalLabel = new JLabel("Código Postal: " + codigoPostal);
+        codigoPostalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(codigoPostalLabel);
+
+        JLabel regimenFiscalLabel = new JLabel("Régimen Fiscal: " + regimenFiscal);
+        regimenFiscalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(regimenFiscalLabel);
 
         // Agregar la fecha actual
         JLabel fechaLabel = new JLabel("Fecha: " + LocalDate.now());
@@ -324,8 +362,8 @@ public class ControlRealizarVenta implements ActionListener {
         panelContenido.add(productosLabel);
 
         for (Producto producto : productosVendidos) {
-            JLabel productoLabel = new JLabel(producto.getNombre() + " - Precio: $" + producto.getPrecio());
-            productoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JLabel productoLabel = new JLabel(producto.getNombre() + " - $" + producto.getPrecio());
+            productoLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
             panelContenido.add(productoLabel);
         }
 
@@ -334,16 +372,25 @@ public class ControlRealizarVenta implements ActionListener {
         for (Producto producto : productosVendidos) {
             totalVenta  += producto.getPrecio();
         }
-
+        panelContenido.add(Box.createVerticalStrut(10));
         // Agregar el total
         JLabel totalLabel = new JLabel("Total: $" + totalVenta );
         totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelContenido.add(totalLabel);
+        
+        // Agregar el total de artículos vendidos
+        JLabel totalArticulosLabel = new JLabel("Total de artículos vendidos: " + productosVendidos.size());
+        totalArticulosLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(totalArticulosLabel);
+        // Agregar el panel de contenido a un JScrollPane
+        JScrollPane scrollPane = new JScrollPane(panelContenido);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        
         // Limpiar el JTextArea y agregar el contenido del panel
         jTicket.removeAll();
         jTicket.setLayout(new BorderLayout());
-        jTicket.add(panelContenido, BorderLayout.CENTER);
+        jTicket.add(scrollPane, BorderLayout.CENTER);
         jTicket.revalidate();
         jTicket.repaint();
     }
@@ -354,6 +401,13 @@ public class ControlRealizarVenta implements ActionListener {
     JPanel panelContenido = new JPanel();
     panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
     
+    String razonSocial = "Golden Mart de S.A de C.V";
+    String direccion = "Calle Principal 123";
+    String ciudad = "Puebla";
+    String estado = "Puebla";
+    String codigoPostal = "73451";
+    String regimenFiscal = "Régimen Fiscal 601-General de Ley Personas Morales";
+    
     panelContenido.removeAll();
     // Agregar el logo de la empresa
     ImageIcon logo = new ImageIcon(getClass().getResource("/imagenes/logoticket.png"));
@@ -361,6 +415,31 @@ public class ControlRealizarVenta implements ActionListener {
     logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     panelContenido.add(logoLabel);
 
+    // Agregar información de la empresa
+    JLabel razonSocialLabel = new JLabel("Razón Social: " + razonSocial);
+    razonSocialLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(razonSocialLabel);
+
+    JLabel direccionLabel = new JLabel("Dirección: " + direccion);
+    direccionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(direccionLabel);
+
+    JLabel ciudadLabel = new JLabel("Ciudad: " + ciudad);
+    ciudadLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(ciudadLabel);
+
+    JLabel estadoLabel = new JLabel("Estado: " + estado);
+    estadoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(estadoLabel);
+
+    JLabel codigoPostalLabel = new JLabel("Código Postal: " + codigoPostal);
+    codigoPostalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(codigoPostalLabel);
+
+    JLabel regimenFiscalLabel = new JLabel("Régimen Fiscal: " + regimenFiscal);
+    regimenFiscalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panelContenido.add(regimenFiscalLabel);
+        
     // Agregar la fecha actual
     JLabel fechaLabel = new JLabel("Fecha: " + LocalDate.now());
     fechaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -373,33 +452,36 @@ public class ControlRealizarVenta implements ActionListener {
     JLabel horaLabel = new JLabel("Hora: " + horaFormateada);
     horaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     panelContenido.add(horaLabel);
-
+    
     // Agregar los productos vendidos
     JLabel productosLabel = new JLabel("Productos:");
     productosLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     panelContenido.add(productosLabel);
 
     for (Producto producto : productosVendidos) {
-        JLabel productoLabel = new JLabel(producto.getNombre() + " - Precio: $" + producto.getPrecio());
-        productoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel productoLabel = new JLabel(producto.getNombre() + " - $" + producto.getPrecio());
+        productoLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         panelContenido.add(productoLabel);
     }
 
     // Calcular el total
-    float total = 0;
+    totalVenta = 0;
     for (Producto producto : productosVendidos) {
-        total += producto.getPrecio();
+        totalVenta += producto.getPrecio();
     }
 
     // Agregar el total
-    JLabel totalLabel = new JLabel("Total: $" + total);
+    JLabel totalLabel = new JLabel("Total: $" + totalVenta);
     totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     panelContenido.add(totalLabel);
+    JScrollPane scrollPane = new JScrollPane(panelContenido);
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-    // Limpiar el JTextArea y agregar el contenido del panel
+        
+        // Limpiar el JTextArea y agregar el contenido del panel
     jTicket.removeAll();
     jTicket.setLayout(new BorderLayout());
-    jTicket.add(panelContenido, BorderLayout.CENTER);
+    jTicket.add(scrollPane, BorderLayout.CENTER);
     jTicket.revalidate();
     jTicket.repaint();
 }
