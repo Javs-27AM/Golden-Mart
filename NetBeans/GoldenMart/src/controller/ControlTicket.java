@@ -10,7 +10,7 @@ package controller;
  */
 import java.util.List;
 import model.Producto;
-import model.Ticket;
+//import model.Ticket;
 import view.TicketVista;
 
 

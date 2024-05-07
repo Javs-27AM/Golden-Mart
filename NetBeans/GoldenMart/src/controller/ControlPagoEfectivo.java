@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -26,6 +28,8 @@ import view.PagoEfectivo;
 public class ControlPagoEfectivo implements ActionListener {
     public PagoEfectivo view;
     public float totalVenta;
+    public LocalDate fechaVenta; // Cambiar el tipo de dato de Date a LocalDate
+    public LocalTime horaVenta;
     public float cantidadPagada = 0;// Variable para almacenar la cantidad pagada
     public ControlRealizarVenta controlRealizarVenta;
     
@@ -84,6 +88,8 @@ public class ControlPagoEfectivo implements ActionListener {
                 cantidadPagada += pago; // Acumular la cantidad pagada
                 if (cantidadPagada >= totalVenta) {
                     float cambio = cantidadPagada - totalVenta;
+                    fechaVenta = LocalDate.now();
+                    horaVenta = LocalTime.now();
                     view.jCambio.setText(String.valueOf(cambio));
                     // Aquí puedes agregar la lógica adicional, como registrar el pago en el sistema
                     Object[] options = {"Aceptar"};
@@ -103,8 +109,11 @@ public class ControlPagoEfectivo implements ActionListener {
                     ControlTicket controlTicket = new ControlTicket(controlRealizarVenta);
                     controlTicket.mostrarTicket(cantidadPagada, cambio, controlRealizarVenta.getProductosVendidos());
 
-                    
-                    //controlRealizarVenta.reiniciarControlador();
+                    ControlRegistrarVenta controlRegistrarVenta = new ControlRegistrarVenta(controlRealizarVenta);
+                    controlRegistrarVenta.insertarVenta(fechaVenta, horaVenta, totalVenta);
+                
+                    //controlRegistrarVenta.insertarVentaConDetalle(fechaVenta, horaVenta, totalVenta, controlRealizarVenta.getProductosVendidos());
+                    controlRealizarVenta.reiniciarControlador();
                     
                 } else {
                     float restante = totalVenta - cantidadPagada;

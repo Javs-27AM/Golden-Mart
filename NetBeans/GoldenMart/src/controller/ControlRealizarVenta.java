@@ -313,7 +313,7 @@ public class ControlRealizarVenta implements ActionListener {
         String estado = "Puebla";
         String codigoPostal = "73451";
         String regimenFiscal = "Régimen Fiscal 601-General de Ley Personas Morales";
- 
+  
         // Crear un panel para agregar elementos de forma más flexible
         JPanel panelContenido = new JPanel();
         panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
