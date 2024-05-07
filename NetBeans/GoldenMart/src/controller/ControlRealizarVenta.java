@@ -551,8 +551,7 @@ public class ControlRealizarVenta implements ActionListener {
         String estado = "Puebla";
         String codigoPostal = "73451";
         String regimenFiscal = "Régimen Fiscal 601-General de Ley Personas Morales";
-        /*float cantidadPagada=0;
-        float cambio=0;*/
+        
 
         // Crear un panel para agregar elementos de forma más flexible
         JPanel panelContenido = new JPanel();
@@ -654,6 +653,123 @@ public class ControlRealizarVenta implements ActionListener {
         /*// Agregar el panel de contenido a un JScrollPane
         JScrollPane scrollPane = new JScrollPane(panelContenido);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);*/
+
+        // Limpiar el JTextArea y agregar el contenido del panel
+        jTicket.removeAll();
+        jTicket.setLayout(new BorderLayout());
+        jTicket.add(panelContenido, BorderLayout.CENTER);
+        jTicket.revalidate();
+        jTicket.repaint();
+    }
+    
+     
+    public void agregarContenidoTarjetaTicket(List<Producto> productosVendidos, JTextArea jTicket, float cantidadPagada, String ultimosCuatroDigitosTarjeta) {
+        String razonSocial = "Golden Mart de S.A de C.V";
+        String direccion = "Calle Principal 123";
+        String ciudad = "Puebla";
+        String estado = "Puebla";
+        String codigoPostal = "73451";
+        String regimenFiscal = "Régimen Fiscal 601-General de Ley Personas Morales";
+        
+
+        // Crear un panel para agregar elementos de forma más flexible
+        JPanel panelContenido = new JPanel();
+        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
+        //panelContenido.removeAll();
+
+        // Agregar el logo de la empresa
+        ImageIcon logo = new ImageIcon(getClass().getResource("/imagenes/logoticket.png"));
+        JLabel logoLabel = new JLabel(logo);
+        logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(logoLabel);
+
+        // Agregar información de la empresa
+        JLabel razonSocialLabel = new JLabel("Razón Social: " + razonSocial);
+        razonSocialLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(razonSocialLabel);
+
+        JLabel direccionLabel = new JLabel("Dirección: " + direccion);
+        direccionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(direccionLabel);
+
+        JLabel ciudadLabel = new JLabel("Ciudad: " + ciudad);
+        ciudadLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(ciudadLabel);
+
+        JLabel estadoLabel = new JLabel("Estado: " + estado);
+        estadoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(estadoLabel);
+
+        JLabel codigoPostalLabel = new JLabel("Código Postal: " + codigoPostal);
+        codigoPostalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(codigoPostalLabel);
+
+        JLabel regimenFiscalLabel = new JLabel("Régimen Fiscal: " + regimenFiscal);
+        regimenFiscalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(regimenFiscalLabel);
+
+        // Agregar la fecha actual
+        JLabel fechaLabel = new JLabel("Fecha: " + LocalDate.now());
+        fechaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(fechaLabel);
+
+        // Agregar la hora actual
+        LocalTime horaActual = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String horaFormateada = horaActual.format(formatter);
+        JLabel horaLabel = new JLabel("Hora: " + horaFormateada);
+        horaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(horaLabel);
+
+        // Agregar los productos vendidos con formato
+        JLabel productosLabel = new JLabel("Productos:");
+        productosLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(productosLabel);
+
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        for (Producto producto : productosVendidos) {
+            String productoText = String.format("%-20s %-10s %10s", producto.getMarca(), producto.getNombre(), currencyFormat.format(producto.getPrecio()));
+            JLabel productoLabel = new JLabel(productoText);
+            productoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelContenido.add(productoLabel);
+        }
+
+        // Calcular el total
+        totalVenta = 0;
+        for (Producto producto : productosVendidos) {
+            totalVenta += producto.getPrecio();
+        }
+
+        // Agregar el total
+        JLabel totalLabel = new JLabel("Total: " + currencyFormat.format(totalVenta));
+        totalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(totalLabel);
+        
+         // Agregar la cantidad cobrada a su tarjeta
+        JLabel cantidadPagadaLabel = new JLabel("Cantidad cobrada: " + currencyFormat.format(cantidadPagada));
+        cantidadPagadaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(cantidadPagadaLabel);
+        
+        // Agregar los últimos cuatro dígitos de la tarjeta al ticket
+        JLabel numeroTarjetaLabel = new JLabel("Número de Tarjeta: **** **** **** " + ultimosCuatroDigitosTarjeta);
+        numeroTarjetaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(numeroTarjetaLabel);
+
+        // Agregar el total de artículos vendidos
+        JLabel totalArticulosLabel = new JLabel("Total de artículos vendidos: " + productosVendidos.size());
+        totalArticulosLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(totalArticulosLabel);
+
+        // Agregar líneas separadoras entre secciones
+        panelContenido.add(Box.createVerticalStrut(10));
+        panelContenido.add(new JSeparator(SwingConstants.HORIZONTAL));
+        panelContenido.add(Box.createVerticalStrut(10));
+
+        // Agregar un pie de página
+        JLabel piePaginaLabel = new JLabel("Gracias por su compra en Golden Mart");
+        piePaginaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panelContenido.add(piePaginaLabel);
+
 
         // Limpiar el JTextArea y agregar el contenido del panel
         jTicket.removeAll();

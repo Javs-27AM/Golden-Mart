@@ -37,6 +37,13 @@ public class ControlTicket   {
         // Mostrar la ventana
         view.setVisible(true);
 }
+    public void mostrarTicketTarjeta(float cantidadPagada, String ultimosCuatroDigitosTarjeta, List<Producto> productosVendidos) {
+    // Agregar el contenido del ticket al JTextArea jTicketImpreso
+    controlRealizarVenta.agregarContenidoTarjetaTicket(productosVendidos, view.jTicketImpreso, cantidadPagada, ultimosCuatroDigitosTarjeta);
+        
+        // Mostrar la ventana
+        view.setVisible(true);
+}
 
 
 }

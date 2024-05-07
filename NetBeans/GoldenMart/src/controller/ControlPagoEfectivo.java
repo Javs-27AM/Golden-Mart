@@ -103,7 +103,7 @@ public class ControlPagoEfectivo implements ActionListener {
                     ((JButton) view.jCancelar).setEnabled(false);
                     ((JButton) view.jPago).setEnabled(false);
                      // Mostrar la cantidad pagada y el cambio en el ticket
-                    controlRealizarVenta.agregarContenidoEfectivo(controlRealizarVenta.getProductosVendidos(), controlRealizarVenta.view.jTicket, cantidadPagada, cambio);
+                    //controlRealizarVenta.agregarContenidoEfectivo(controlRealizarVenta.getProductosVendidos(), controlRealizarVenta.view.jTicket, cantidadPagada, cambio);
                     controlRealizarVenta.agregarContenidoEfectivoTicket(controlRealizarVenta.getProductosVendidos(), controlRealizarVenta.view.jTicket, cantidadPagada, cambio);
                     
                     ControlTicket controlTicket = new ControlTicket(controlRealizarVenta);

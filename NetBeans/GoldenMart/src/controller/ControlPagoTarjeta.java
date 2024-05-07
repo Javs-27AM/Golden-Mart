@@ -19,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -31,6 +33,10 @@ import view.PagoTarjeta;
 public class ControlPagoTarjeta implements ActionListener {
     public PagoTarjeta view;
     public float totalVenta;
+    public LocalDate fechaVenta; // Cambiar el tipo de dato de Date a LocalDate
+    public LocalTime horaVenta;
+    public float cantidadPagada;
+    public String ultimosCuatroDigitosTarjeta;
     public ControlRealizarVenta controlRealizarVenta;
 
     public ControlPagoTarjeta(float totalVenta, ControlRealizarVenta controlRealizarVenta) { // Modificamos el constructor para aceptar la referencia al controlador de Realizar Venta
@@ -42,6 +48,8 @@ public class ControlPagoTarjeta implements ActionListener {
         configurarValidaciones();
         this.view.jTotal.setText(String.valueOf(totalVenta));
         this.view.jTotal.setEditable(false);
+        this.cantidadPagada = totalVenta; // Suponiendo que al inicio la cantidad pagada es igual al total de la venta
+        this.ultimosCuatroDigitosTarjeta = "";
         
     }
 
@@ -163,8 +171,10 @@ public class ControlPagoTarjeta implements ActionListener {
             JDialog dialog = optionPane.createDialog("Error de Validación");
             dialog.setVisible(true);
             return false;
+        } else {
+        // Asignar los últimos cuatro dígitos de la tarjeta
+        this.ultimosCuatroDigitosTarjeta = numeroTarjeta.substring(numeroTarjeta.length() - 4);
         }
-
         // Validar el nombre de la tarjeta (no debe estar vacío)
         String nombreTarjeta = view.jNombre.getText().trim();
         if (nombreTarjeta.isEmpty()) {
@@ -227,6 +237,8 @@ public class ControlPagoTarjeta implements ActionListener {
         boolean pagoExitoso = simularProcesamientoDePago();
         // Mostrar mensaje de éxito o error
         if (pagoExitoso) {
+            fechaVenta = LocalDate.now();
+            horaVenta = LocalTime.now();
             mostrarMensaje("Pago realizado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE); 
             view.jNombre.setEnabled(false);
             view.jTarjeta.setEnabled(false);
@@ -236,7 +248,15 @@ public class ControlPagoTarjeta implements ActionListener {
             // Deshabilitar el botón de cancelar
             ((JButton) view.jCancelar).setEnabled(false);
             ((JButton) view.jPago).setEnabled(false);
-            //controlRealizarVenta.reiniciarControlador();
+            
+            controlRealizarVenta.agregarContenidoTarjetaTicket(controlRealizarVenta.getProductosVendidos(), controlRealizarVenta.view.jTicket, cantidadPagada, ultimosCuatroDigitosTarjeta);
+                    
+            ControlTicket controlTicket = new ControlTicket(controlRealizarVenta);
+            controlTicket.mostrarTicketTarjeta(cantidadPagada, ultimosCuatroDigitosTarjeta, controlRealizarVenta.getProductosVendidos());
+
+            ControlRegistrarVenta controlRegistrarVenta = new ControlRegistrarVenta(controlRealizarVenta);
+            controlRegistrarVenta.insertarVenta(fechaVenta, horaVenta, totalVenta);
+            
             view.dispose();
         } else {
             mostrarMensaje("El pago no se pudo procesar. Por favor, intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
