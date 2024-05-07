@@ -30,7 +30,7 @@ import view.PagoTarjeta;
 
 public class ControlPagoTarjeta implements ActionListener {
     public PagoTarjeta view;
-    private float totalVenta;
+    public float totalVenta;
     public ControlRealizarVenta controlRealizarVenta;
 
     public ControlPagoTarjeta(float totalVenta, ControlRealizarVenta controlRealizarVenta) { // Modificamos el constructor para aceptar la referencia al controlador de Realizar Venta
@@ -236,7 +236,7 @@ public class ControlPagoTarjeta implements ActionListener {
             // Deshabilitar el botón de cancelar
             ((JButton) view.jCancelar).setEnabled(false);
             ((JButton) view.jPago).setEnabled(false);
-            controlRealizarVenta.reiniciarControlador();
+            //controlRealizarVenta.reiniciarControlador();
             view.dispose();
         } else {
             mostrarMensaje("El pago no se pudo procesar. Por favor, intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -255,7 +255,7 @@ public class ControlPagoTarjeta implements ActionListener {
     private boolean simularProcesamientoDePago() {
         // Simula el procesamiento del pago
         
-        return Math.random() < 0.6; // Simula un 80% de probabilidad de éxito
+        return Math.random() < 0.9; // Simula un 80% de probabilidad de éxito
     }
     
     private void mostrarMensaje(String mensaje, String titulo, int tipoMensaje) {

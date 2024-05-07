@@ -11,7 +11,7 @@ import java.awt.event.*;
  */
 public class ControlMenuPago implements ActionListener {
     public MenuPago view;
-    private float totalVenta;
+    public float totalVenta;
     public ControlRealizarVenta controlRealizarVenta;
 
     /**

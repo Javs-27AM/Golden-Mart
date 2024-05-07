@@ -21,25 +21,21 @@ public class Venta {
     private Date fechaVenta;
     private Time horaVenta;
     private float total;
-    private List<Producto> productosVendidos;
 
     public Venta(int idVenta, Date fechaVenta, Time horaVenta, float total) {
         this.idVenta = idVenta;
         this.fechaVenta = fechaVenta;
         this.horaVenta = horaVenta;
         this.total = total;
-        this.productosVendidos = new ArrayList<>();
     }
 
     public Venta(Date fechaVenta, Time horaVenta, float total) {
         this.fechaVenta = fechaVenta;
         this.horaVenta = horaVenta;
         this.total = total;
-        this.productosVendidos = new ArrayList<>();
     }
     
     public Venta(){
-        this.productosVendidos = new ArrayList<>();
     }
 
     // Getters y setters para los atributos de la clase Venta
@@ -75,18 +71,6 @@ public class Venta {
 
     public void setTotal(float total) {
         this.total = total;
-    }
-
-    public List<Producto> getProductosVendidos() {
-        return productosVendidos;
-    }
-
-    public void agregarProducto(Producto producto) {
-        productosVendidos.add(producto);
-    }
-
-    public void eliminarProducto(Producto producto) {
-        productosVendidos.remove(producto);
     }
 
     public void insertarVentaEnBD(Venta venta) {
@@ -131,8 +115,5 @@ public class Venta {
         return ventas;
     }
 
-    public void incrementarCantidadProductosVendidos(int cantidad) {
-        // Este método podría ser útil para llevar un registro de la cantidad
-        // total de productos vendidos en la venta, si lo necesitas.
-    }
+    
 }

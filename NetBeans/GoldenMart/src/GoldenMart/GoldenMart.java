@@ -6,6 +6,7 @@ package GoldenMart;
 import controller.*;
 import java.sql.Connection;
 import model.Conexion;
+
 /**
  *
  * @author Javs

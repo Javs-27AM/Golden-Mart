@@ -16,15 +16,19 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import view.PagoEfectivo;
 
 
 public class ControlPagoEfectivo implements ActionListener {
     public PagoEfectivo view;
-    private float totalVenta;
-    private float cantidadPagada = 0;
-    public ControlRealizarVenta controlRealizarVenta;// Variable para almacenar la cantidad pagada
-
+    public float totalVenta;
+    public float cantidadPagada = 0;// Variable para almacenar la cantidad pagada
+    public ControlRealizarVenta controlRealizarVenta;
+    
      public ControlPagoEfectivo(float totalVenta, ControlRealizarVenta controlRealizarVenta) {
         this.totalVenta = totalVenta;
         this.controlRealizarVenta = controlRealizarVenta;
@@ -34,6 +38,24 @@ public class ControlPagoEfectivo implements ActionListener {
         this.view.jTotal.setText(String.valueOf(totalVenta)); // Mostrar el total de la venta en el campo correspondiente
         this.view.jTotal.setEditable(false); // Deshabilitar la edición del campo de texto del total
         this.view.jCambio.setEditable(false); // Deshabilitar la edición del campo de texto del cambio
+        
+        // Filtrar entrada para aceptar solo números
+        ((AbstractDocument) view.jPagado.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                String newText = fb.getDocument().getText(0, fb.getDocument().getLength()) + text;
+                if (newText.matches("\\d*")) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+
+        // Deshabilitar pegado mediante Ctrl+V
+        view.jPagado.setTransferHandler(null);
+
+        
+        
         this.view.jPagado.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -74,7 +96,15 @@ public class ControlPagoEfectivo implements ActionListener {
                     // Deshabilitar el botón de cancelar
                     ((JButton) view.jCancelar).setEnabled(false);
                     ((JButton) view.jPago).setEnabled(false);
-                    controlRealizarVenta.reiniciarControlador();
+                     // Mostrar la cantidad pagada y el cambio en el ticket
+                    controlRealizarVenta.agregarContenidoEfectivo(controlRealizarVenta.getProductosVendidos(), controlRealizarVenta.view.jTicket, cantidadPagada, cambio);
+                    controlRealizarVenta.agregarContenidoEfectivoTicket(controlRealizarVenta.getProductosVendidos(), controlRealizarVenta.view.jTicket, cantidadPagada, cambio);
+                    
+                    ControlTicket controlTicket = new ControlTicket(controlRealizarVenta);
+                    controlTicket.mostrarTicket(cantidadPagada, cambio, controlRealizarVenta.getProductosVendidos());
+
+                    
+                    //controlRealizarVenta.reiniciarControlador();
                     
                 } else {
                     float restante = totalVenta - cantidadPagada;
