@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ *
+ * @author Javs
+ */
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -9,9 +13,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -30,12 +37,18 @@ public class ControlGestionarInventario implements ActionListener {
 
     public ControlGestionarInventario() {
         this.view = new GestionarInventario();
+        this.view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.view.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Simulamos el evento de clic en el botón "Regresar"
+                actionPerformed(new ActionEvent(view.jRegresar, ActionEvent.ACTION_PERFORMED, "Regresar"));
+            }
+        });
         this.view.jAgregar.addActionListener(this);
         this.view.jBuscar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
         this.view.jActualizar.addActionListener(this);
-        // Suponiendo que tienes una instancia de ControlBuscar llamada controlBuscar
-
         this.view.jBusqueda.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -45,7 +58,6 @@ public class ControlGestionarInventario implements ActionListener {
                 controlBuscar.cargarProductos(view.jProducto, textoBusqueda);
             }
         });
-
         this.view.jProducto.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -63,6 +75,7 @@ public class ControlGestionarInventario implements ActionListener {
             }
         }
     });
+        
 
         this.productoModel = new Producto();
         cargarProductos();
@@ -70,7 +83,7 @@ public class ControlGestionarInventario implements ActionListener {
 
     public void iniciar() {
         view.setLocationRelativeTo(null);
-        view.setVisible(true);
+        //view.setVisible(true);
     }
 
     @Override
@@ -215,4 +228,6 @@ public class ControlGestionarInventario implements ActionListener {
             view.jProducto.getColumnModel().getColumn(7).setCellRenderer(new ComponentCellRenderer());
             view.jProducto.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
 }
+   
+   
 }

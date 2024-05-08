@@ -19,6 +19,8 @@ public class GestionarInventario extends javax.swing.JFrame {
      */
     public GestionarInventario() {
         initComponents();
+        setVisible(true);
+        //setResizable(false);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jProducto.setDefaultRenderer(Object.class, new ComponentCellRenderer());
         

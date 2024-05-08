@@ -27,6 +27,13 @@ public class ControlRegistro implements ActionListener {
         this.view.jAgregar.addActionListener(this);
         this.view.jCancelar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
+        this.view.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Simular el evento de clic en el botón "Regresar"
+                actionPerformed(new ActionEvent(view.jRegresar, ActionEvent.ACTION_PERFORMED, "Regresar"));
+            }
+        });
     }
 
     public void iniciar() {

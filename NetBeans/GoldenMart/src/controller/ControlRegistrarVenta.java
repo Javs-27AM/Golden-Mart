@@ -7,7 +7,6 @@ package controller;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import javax.swing.JOptionPane;
 import model.Producto;
 import model.Venta;
 
