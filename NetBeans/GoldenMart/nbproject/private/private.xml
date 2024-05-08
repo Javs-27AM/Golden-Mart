@@ -12,14 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/model/Ticket.java</file>
+            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/NonEditableTableModel.java</file>
             <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlRealizarVenta.java</file>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlPagoTarjeta.java</file>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/view/Ticket.java</file>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlPagoEfectivo.java</file>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/GoldenMart/GoldenMart.java</file>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlTicket.java</file>
-            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/model/Producto.java</file>
+            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlGestionarInventario.java</file>
+            <file>file:/C:/Users/CARLOS/Documents/Javs/IS2/GoldenMart/Golden-Mart/NetBeans/GoldenMart/src/controller/ControlBuscar.java</file>
         </group>
     </open-files>
 </project-private>

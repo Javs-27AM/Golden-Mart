@@ -159,24 +159,37 @@ public class Producto {
         JOptionPane.showMessageDialog(null, "Error: Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+        Object[] options = {"Aceptar"};
+        // Obtener el ID de la categoría
+        int idCategoria = obtenerIdCategoria(categoria);
+        if (idCategoria == -1) {
+            JOptionPane optionPane = new JOptionPane("La categoría especificada no existe.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+            JDialog dialog = optionPane.createDialog("Error");
+            dialog.setVisible(true);
+            
+            return;
+        }
+
+        
     
-       String sql = "INSERT INTO producto (Nombre, Marca, ContenidoNeto, Categoria, Precio, Imagen, Cantidad_Disponible, Descripcion, Eliminado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+       String sql = "INSERT INTO producto (Nombre, Marca, ContenidoNeto, Categoria,IdCategoria, Precio, Imagen, Cantidad_Disponible, Descripcion, Eliminado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
  
-    try (Connection con = conexion.getConnection();
-        PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-        pstmt.setString(1, nombre);
-        pstmt.setString(2, marca);
-        pstmt.setString(3, contenidoNeto);
-        pstmt.setString(4, categoria);
-        pstmt.setFloat(5, precio);
-        pstmt.setString(6, imagen);
-        pstmt.setInt(7, cantidadDisponible);
-        pstmt.setString(8, descripcion);
-        pstmt.executeUpdate();
-        JOptionPane optionPane = new JOptionPane("Producto insertado correctamente en la base de datos.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"}, "Aceptar");
-        JDialog dialog = optionPane.createDialog("Éxito");
-        dialog.setVisible(true);
-    } catch (SQLException ex) {
+        try (Connection con = conexion.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, nombre);
+            pstmt.setString(2, marca);
+            pstmt.setString(3, contenidoNeto);
+            pstmt.setString(4, categoria);
+            pstmt.setInt(5, idCategoria);
+            pstmt.setFloat(6, precio);
+            pstmt.setString(7, imagen);
+            pstmt.setInt(8, cantidadDisponible);
+            pstmt.setString(9, descripcion);
+            pstmt.executeUpdate();
+            JOptionPane optionPane = new JOptionPane("Producto insertado correctamente en la base de datos.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{"Aceptar"}, "Aceptar");
+            JDialog dialog = optionPane.createDialog("Éxito");
+            dialog.setVisible(true);
+        } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL para insertar un nuevo producto.", "Error", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
     }
@@ -473,6 +486,25 @@ public class Producto {
         return listaProductosVendidos;
     }
     
+    public int obtenerIdCategoria(String nombreCategoria) {
+    int idCategoria = -1; // Valor por defecto en caso de no encontrar la categoría
+    
+    String sql = "SELECT IdCategoria FROM categoria WHERE NombreCategoria = ?";
+    
+    try (Connection con = conexion.getConnection();
+         PreparedStatement pstmt = con.prepareStatement(sql)) {
+        pstmt.setString(1, nombreCategoria);
+        try (ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                idCategoria = rs.getInt("IdCategoria");
+            }
+        }
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+    
+    return idCategoria;
+}
 
 }
 
