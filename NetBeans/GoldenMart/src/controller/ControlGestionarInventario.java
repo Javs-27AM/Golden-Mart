@@ -51,7 +51,7 @@ public class ControlGestionarInventario implements ActionListener {
         public void mouseClicked(MouseEvent e) {
             int fila = view.jProducto.rowAtPoint(e.getPoint());
             int columna = view.jProducto.columnAtPoint(e.getPoint());
-            if (fila >= 0 && columna == 8) { // Columna de Modificar
+            if (fila >= 0 && columna == 7 || columna == 8) { // Columna de Modificar
                 int idProducto = (int) view.jProducto.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
                 ControlModificar controlModificar = new ControlModificar(idProducto);
                 controlModificar.view.setVisible(true);
@@ -95,105 +95,19 @@ public class ControlGestionarInventario implements ActionListener {
             cargarProductos();
         }
     }
-
     public void cargarProductos() {
-        List<Producto> productos = productoModel.listaProductos();
-        model = new DefaultTableModel();
-        model.addColumn("ID Producto");
-        model.addColumn("Nombre");
-        model.addColumn("Marca");
-        model.addColumn("Contenido Neto");
-        model.addColumn("Categoría");
-        model.addColumn("Precio");
-        model.addColumn("Cantidad Disponible");
-        model.addColumn("Imagen");
-        model.addColumn("Modificar");
-        model.addColumn("Eliminar");
-
-        for (Producto producto : productos) {
-            JButton botonModificar = new JButton("Modificar");
-            JButton botonEliminar = new JButton("Eliminar");
-
-            String rutaImagen = producto.getImagen();
-            ImageIcon imageIcon = createImageIcon(rutaImagen);
-            JLabel imagenLabel = new JLabel(imageIcon);
-            imagenLabel.setPreferredSize(new Dimension(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT));
-            Object[] row = {
-                producto.getIdProducto(),
-                producto.getNombre(),
-                producto.getMarca(),
-                producto.getContenidoNeto(),
-                producto.getCategoria(),
-                producto.getPrecio(),
-                producto.getCantidadDisponible(),
-                imagenLabel,
-                botonModificar,
-                botonEliminar
-            };
-            model.addRow(row);
-        }
-        view.jProducto.setModel(model);
-
-        TableColumnModel columnModel = view.jProducto.getColumnModel();
-        for (int column = 0; column < view.jProducto.getColumnCount(); column++) {
-            if (column == 7) { // Columna de la imagen
-                columnModel.getColumn(column).setPreferredWidth(IMAGEN_COLUMN_WIDTH);
-                columnModel.getColumn(column).setMinWidth(IMAGEN_COLUMN_WIDTH);
-                columnModel.getColumn(column).setMaxWidth(IMAGEN_COLUMN_WIDTH);
-                columnModel.getColumn(column).setResizable(false);
-                view.jProducto.setRowHeight(IMAGEN_COLUMN_HEIGHT);
-            } else {
-                int width = 15;
-                for (int row = 0; row < view.jProducto.getRowCount(); row++) {
-                    TableCellRenderer renderer = view.jProducto.getCellRenderer(row, column);
-                    Component comp = view.jProducto.prepareRenderer(renderer, row, column);
-                    width = Math.max(comp.getPreferredSize().width + 1, width);
-                }
-                columnModel.getColumn(column).setPreferredWidth(width);
-            }
-        }
-        view.jProducto.getColumnModel().getColumn(0).setMinWidth(0);
-        view.jProducto.getColumnModel().getColumn(0).setMaxWidth(0);
-        view.jProducto.getColumnModel().getColumn(0).setWidth(0);
-        view.jProducto.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
-        view.jProducto.getColumnModel().getColumn(9).setCellRenderer(new ComponentCellRenderer());
-    }
-
-    protected ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            ImageIcon icon = new ImageIcon(imgURL);
-            Image image = icon.getImage().getScaledInstance(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT, Image.SCALE_SMOOTH);
-            return new ImageIcon(image);
-        } else {
-            System.err.println("No se pudo encontrar el archivo de imagen: " + path);
-            return null;
-        }
-    }
-    
-    public void cargarProductos(JTable tabla, String textoBusqueda) {
-    List<Producto> productos = (textoBusqueda.isEmpty()) ? productoModel.listaProductos() : productoModel.buscarProductos(textoBusqueda);
-    model = new DefaultTableModel();
-    model.addColumn("ID Producto");
-    model.addColumn("Nombre");
-    model.addColumn("Marca");
-    model.addColumn("Contenido Neto");
-    model.addColumn("Categoría");
-    model.addColumn("Precio");
-    model.addColumn("Cantidad Disponible");
-    model.addColumn("Imagen");
-    model.addColumn("Modificar");
-    model.addColumn("Eliminar");
-
-    for (Producto producto : productos) {
-        JButton botonModificar = new JButton("Modificar");
+    List<Producto> productos = productoModel.listaProductos();
+    Object[][] data = new Object[productos.size()][9]; // Ajusta el tamaño según tus necesidades
+    String[] columnNames = {"ID Producto", "Nombre", "Marca", "Contenido Neto","Categoria", "Precio", "Cantidad Disponible", "Imagen", "Modificar Producto", "Eliminar"};
+    for (int i = 0; i < productos.size(); i++) {
+        Producto producto = productos.get(i);
+        JButton botonModificar= new JButton("Modificar Producto");
         JButton botonEliminar = new JButton("Eliminar");
-
         String rutaImagen = producto.getImagen();
         ImageIcon imageIcon = createImageIcon(rutaImagen);
         JLabel imagenLabel = new JLabel(imageIcon);
         imagenLabel.setPreferredSize(new Dimension(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT));
-        Object[] row = {
+        data[i] = new Object[]{
             producto.getIdProducto(),
             producto.getNombre(),
             producto.getMarca(),
@@ -205,32 +119,100 @@ public class ControlGestionarInventario implements ActionListener {
             botonModificar,
             botonEliminar
         };
-        model.addRow(row);
     }
-    tabla.setModel(model);
+    int[] nonEditableColumns = {0, 1, 2, 3, 4, 5, 6}; // Columnas de 0 a 5
+    NonEditableTableModel model = new NonEditableTableModel(data, columnNames, nonEditableColumns);
+    view.jProducto.setModel(model);
 
-    TableColumnModel columnModel = tabla.getColumnModel();
-    for (int column = 0; column < tabla.getColumnCount(); column++) {
-        if (column == 7) { // Columna de la imagen
-            columnModel.getColumn(column).setPreferredWidth(IMAGEN_COLUMN_WIDTH);
-            columnModel.getColumn(column).setMinWidth(IMAGEN_COLUMN_WIDTH);
-            columnModel.getColumn(column).setMaxWidth(IMAGEN_COLUMN_WIDTH);
-            columnModel.getColumn(column).setResizable(false);
-            tabla.setRowHeight(IMAGEN_COLUMN_HEIGHT);
-        } else {
-            int width = 15;
-            for (int row = 0; row < tabla.getRowCount(); row++) {
-                TableCellRenderer renderer = tabla.getCellRenderer(row, column);
-                Component comp = tabla.prepareRenderer(renderer, row, column);
-                width = Math.max(comp.getPreferredSize().width + 1, width);
+            TableColumnModel columnModel = view.jProducto.getColumnModel();
+            for (int column = 0; column < view.jProducto.getColumnCount(); column++) {
+                if (column == 7) { // Columna de la imagen
+                    columnModel.getColumn(column).setPreferredWidth(IMAGEN_COLUMN_WIDTH);
+                    columnModel.getColumn(column).setMinWidth(IMAGEN_COLUMN_WIDTH);
+                    columnModel.getColumn(column).setMaxWidth(IMAGEN_COLUMN_WIDTH);
+                    columnModel.getColumn(column).setResizable(false);
+                    view.jProducto.setRowHeight(IMAGEN_COLUMN_HEIGHT);
+                } else {
+                    int width = 15;
+                    for (int row = 0; row < view.jProducto.getRowCount(); row++) {
+                        TableCellRenderer renderer = view.jProducto.getCellRenderer(row, column);
+                        Component comp = view.jProducto.prepareRenderer(renderer, row, column);
+                        width = Math.max(comp.getPreferredSize().width + 1, width);
+                    }
+                    columnModel.getColumn(column).setPreferredWidth(width);
+                }
             }
-            columnModel.getColumn(column).setPreferredWidth(width);
+            view.jProducto.getColumnModel().getColumn(0).setMinWidth(0);
+            view.jProducto.getColumnModel().getColumn(0).setMaxWidth(0);
+            view.jProducto.getColumnModel().getColumn(0).setWidth(0);
+            view.jProducto.getColumnModel().getColumn(7).setCellRenderer(new ComponentCellRenderer());
+            view.jProducto.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
+}
+    
+    
+    protected ImageIcon createImageIcon(String path) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            ImageIcon icon = new ImageIcon(imgURL);
+            Image image = icon.getImage().getScaledInstance(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT, Image.SCALE_SMOOTH);
+            return new ImageIcon(image);
+        } else {
+            //System.err.println("No se pudo encontrar el archivo de imagen: " + path);
+            return null;
         }
     }
-    tabla.getColumnModel().getColumn(0).setMinWidth(0);
-    tabla.getColumnModel().getColumn(0).setMaxWidth(0);
-    tabla.getColumnModel().getColumn(0).setWidth(0);
-    tabla.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
-    tabla.getColumnModel().getColumn(9).setCellRenderer(new ComponentCellRenderer());
+    
+   public void cargarProductos(JTable tabla, String textoBusqueda) {
+    List<Producto> productos = (textoBusqueda.isEmpty()) ? productoModel.listaProductos() : productoModel.buscarProductos(textoBusqueda);
+    Object[][] data = new Object[productos.size()][9]; // Ajusta el tamaño según tus necesidades
+    String[] columnNames = {"ID Producto", "Nombre", "Marca", "Contenido Neto","Categoria", "Precio", "Cantidad Disponible", "Imagen", "Modificar Producto", "Eliminar"};
+    for (int i = 0; i < productos.size(); i++) {
+        Producto producto = productos.get(i);
+        JButton botonModificar= new JButton("Modificar Producto");
+        JButton botonEliminar = new JButton("Eliminar");
+        String rutaImagen = producto.getImagen();
+        ImageIcon imageIcon = createImageIcon(rutaImagen);
+        JLabel imagenLabel = new JLabel(imageIcon);
+        imagenLabel.setPreferredSize(new Dimension(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT));
+        data[i] = new Object[]{
+            producto.getIdProducto(),
+            producto.getNombre(),
+            producto.getMarca(),
+            producto.getContenidoNeto(),
+            producto.getCategoria(),
+            producto.getPrecio(),
+            producto.getCantidadDisponible(),
+            imagenLabel,
+            botonModificar,
+            botonEliminar
+        };
+    }
+    int[] nonEditableColumns = {0, 1, 2, 3, 4, 5, 6}; // Columnas de 0 a 5
+    NonEditableTableModel model = new NonEditableTableModel(data, columnNames, nonEditableColumns);
+    view.jProducto.setModel(model);
+
+            TableColumnModel columnModel = view.jProducto.getColumnModel();
+            for (int column = 0; column < view.jProducto.getColumnCount(); column++) {
+                if (column == 7) { // Columna de la imagen
+                    columnModel.getColumn(column).setPreferredWidth(IMAGEN_COLUMN_WIDTH);
+                    columnModel.getColumn(column).setMinWidth(IMAGEN_COLUMN_WIDTH);
+                    columnModel.getColumn(column).setMaxWidth(IMAGEN_COLUMN_WIDTH);
+                    columnModel.getColumn(column).setResizable(false);
+                    view.jProducto.setRowHeight(IMAGEN_COLUMN_HEIGHT);
+                } else {
+                    int width = 15;
+                    for (int row = 0; row < view.jProducto.getRowCount(); row++) {
+                        TableCellRenderer renderer = view.jProducto.getCellRenderer(row, column);
+                        Component comp = view.jProducto.prepareRenderer(renderer, row, column);
+                        width = Math.max(comp.getPreferredSize().width + 1, width);
+                    }
+                    columnModel.getColumn(column).setPreferredWidth(width);
+                }
+            }
+            view.jProducto.getColumnModel().getColumn(0).setMinWidth(0);
+            view.jProducto.getColumnModel().getColumn(0).setMaxWidth(0);
+            view.jProducto.getColumnModel().getColumn(0).setWidth(0);
+            view.jProducto.getColumnModel().getColumn(7).setCellRenderer(new ComponentCellRenderer());
+            view.jProducto.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
 }
 }

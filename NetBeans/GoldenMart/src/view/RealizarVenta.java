@@ -169,7 +169,7 @@ public class RealizarVenta extends javax.swing.JFrame {
     public javax.swing.JTable jProducto;
     public javax.swing.JButton jRegresar;
     public javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTextArea jTicket;
     // End of variables declaration//GEN-END:variables
 

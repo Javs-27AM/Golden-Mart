@@ -6,7 +6,7 @@ package view;
 
 /**
  *
- * @author CARLOS
+ * @author Javs
  */
 public class SesionAdmin extends javax.swing.JFrame {
 
@@ -15,6 +15,7 @@ public class SesionAdmin extends javax.swing.JFrame {
      */
     public SesionAdmin() {
         initComponents();
+        setResizable(false);
     }
 
     /**

@@ -15,6 +15,7 @@ public class RegistrarProducto extends javax.swing.JFrame {
     public RegistrarProducto() {
         initComponents();
         setVisible(true);
+        setResizable(false);
     }
 
     /**

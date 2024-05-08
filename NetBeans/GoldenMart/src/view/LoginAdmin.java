@@ -4,14 +4,13 @@
  */
 package view;
 
-import model.Conexion;
 
 /**
  *
  * @author Javs
  */
 public class LoginAdmin extends javax.swing.JFrame {
-    Conexion conexion = new Conexion();
+   
     /**
      * Creates new form LoginAdmin
      */
@@ -19,6 +18,7 @@ public class LoginAdmin extends javax.swing.JFrame {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
+        setResizable(false);
     }
 
     /**
