@@ -14,6 +14,7 @@ public class MenuPago extends javax.swing.JFrame {
     public MenuPago() {
         initComponents();
         setVisible(true);
+        setResizable(false);
     }
 
     /**

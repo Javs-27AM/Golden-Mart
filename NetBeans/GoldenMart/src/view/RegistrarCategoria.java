@@ -15,6 +15,7 @@ public class RegistrarCategoria extends javax.swing.JFrame {
     public RegistrarCategoria() {
         initComponents();
         setVisible(true);
+        setResizable(false);
     }
 
     /**

@@ -5,7 +5,7 @@
 package view;
 /**
  *
- * @author ASD
+ * @author Javs
  */
 public class Menu extends javax.swing.JFrame {
     /**
@@ -14,6 +14,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         setVisible(true);
+        setResizable(false);
     }
 
     /**

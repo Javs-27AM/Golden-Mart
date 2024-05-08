@@ -15,6 +15,7 @@ public class PagoTarjeta extends javax.swing.JFrame {
     public PagoTarjeta() {
         initComponents();
         setVisible(true);
+        setResizable(false);
     }
 
     /**

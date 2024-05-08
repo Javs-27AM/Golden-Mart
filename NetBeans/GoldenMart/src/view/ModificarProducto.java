@@ -16,6 +16,7 @@ public class ModificarProducto extends javax.swing.JFrame {
         initComponents();
         setVisible(true);
         jIdProducto.setVisible(false);
+        setResizable(false);
     }
 
     /**

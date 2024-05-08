@@ -146,8 +146,6 @@ public class ControlPagoEfectivo implements ActionListener {
         //ControlVentaBD controlVentaBD = new ControlVentaBD(/* parámetros */);
 
         // Cerrar el controlador que lo llamó (ControlMenuPago)
-        if (view.getControladorMenuPago() != null) {
-            view.getControladorMenuPago().cerrarVentana();
-        }
+        
     }
 }
