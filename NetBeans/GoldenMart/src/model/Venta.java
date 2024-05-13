@@ -22,7 +22,17 @@ public class Venta {
     public LocalDate fechaVenta; // Cambiar el tipo de dato de Date a LocalDate
     public LocalTime horaVenta;
     private float total;
-
+    public List<DetalleVenta> detallesVenta; 
+    
+    public Venta(int idVenta, LocalDate fechaVenta, LocalTime horaVenta, float total,  List<DetalleVenta> detallesVenta) {
+        this.idVenta = idVenta;
+        this.fechaVenta = fechaVenta;
+        this.horaVenta = horaVenta;
+        this.total = total;
+        this.detallesVenta = detallesVenta;
+    }
+    
+    
     public Venta(int idVenta, LocalDate fechaVenta, LocalTime horaVenta, float total) {
         this.idVenta = idVenta;
         this.fechaVenta = fechaVenta;
@@ -73,6 +83,14 @@ public class Venta {
     public void setTotal(float total) {
         this.total = total;
     }
+    
+    public List<DetalleVenta> getDetallesVenta() {
+        return detallesVenta;
+    }
+
+    public void setDetallesVenta(List<DetalleVenta> detallesVenta) {
+        this.detallesVenta = detallesVenta;
+    }
 
     public int insertarVentaEnBD(Venta venta) {
     String sql = "INSERT INTO Venta (FechaVenta, HoraVenta, Total) VALUES (?, ?, ?)";
@@ -91,10 +109,10 @@ public class Venta {
                 idVenta = generatedKeys.getInt(1);
             }
         }
-        Object[] options = {"Aceptar"};
+        /*Object[] options = {"Aceptar"};
         JOptionPane optionPane = new JOptionPane("Venta registrada correctamente.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
         JDialog dialog = optionPane.createDialog("Éxito");
-        dialog.setVisible(true);
+        dialog.setVisible(true);*/
     } catch (SQLException ex) {
         Object[] options = {"Aceptar"};
         JOptionPane optionPane = new JOptionPane("Error al registrar la venta.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
@@ -105,7 +123,7 @@ public class Venta {
     
     return idVenta; // Devolver el ID de la venta insertada
 }
-
+    
 
     public List<Venta> buscarVentas(String textoBusqueda) {
         List<Venta> ventas = new ArrayList<>();
@@ -136,6 +154,73 @@ public class Venta {
 
         return ventas;
 }
+    
+    public List<Venta> listaVentas() {
+    List<Venta> ventas = new ArrayList<>();
+    String sql = "SELECT Venta.IdVenta, Venta.FechaVenta, Venta.HoraVenta, Venta.Total, " +
+                 "GROUP_CONCAT(Producto.Nombre SEPARATOR ', ') AS Productos " +
+                 "FROM Venta " +
+                 "INNER JOIN DetalleVenta ON Venta.IdVenta = DetalleVenta.IdVenta " +
+                 "INNER JOIN Producto ON DetalleVenta.IdProducto = Producto.IdProducto " +
+                 "GROUP BY Venta.IdVenta";
+
+    try (Connection con = conexion.getConnection();
+         PreparedStatement pstmt = con.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+
+        while (rs.next()) {
+            Venta venta = new Venta();
+            venta.setIdVenta(rs.getInt("IdVenta"));
+            venta.setFechaVenta(rs.getDate("FechaVenta").toLocalDate());
+            venta.setHoraVenta(rs.getTime("HoraVenta").toLocalTime());
+            venta.setTotal(rs.getFloat("Total"));
+
+            // Obtener la lista de detalles de venta y agregarla al objeto Venta
+            List<DetalleVenta> detalles = obtenerDetallesVentaPorIdVenta(venta.getIdVenta());
+            venta.setDetallesVenta(detalles);
+
+            ventas.add(venta);
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al obtener la lista de ventas.", "Error", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+    }
+
+    return ventas;
+}
+
+public List<DetalleVenta> obtenerDetallesVentaPorIdVenta(int idVenta) {
+    List<DetalleVenta> detalles = new ArrayList<>();
+    String sql = "SELECT DetalleVenta.*, Producto.Nombre AS NombreProducto " +
+                 "FROM DetalleVenta " +
+                 "INNER JOIN Producto ON DetalleVenta.IdProducto = Producto.IdProducto " +
+                 "WHERE DetalleVenta.IdVenta = ?";
+
+    try (Connection con = conexion.getConnection();
+         PreparedStatement pstmt = con.prepareStatement(sql)) {
+        pstmt.setInt(1, idVenta);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            DetalleVenta detalle = new DetalleVenta();
+            detalle.setIdDetalleVenta(rs.getInt("IdDetalleVenta"));
+            detalle.setIdVenta(rs.getInt("IdVenta"));
+            detalle.setIdProducto(rs.getInt("IdProducto"));
+            detalle.setCantidad(rs.getInt("Cantidad"));
+            // Ahora también obtenemos el nombre del producto desde la consulta
+            String nombreProducto = rs.getString("NombreProducto");
+            detalle.setNombreProducto(nombreProducto);
+            detalles.add(detalle);
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al obtener los detalles de venta.", "Error", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+    }
+
+    return detalles;
+}
+
+
 
     
 }

@@ -40,6 +40,7 @@ public class ControlRegistro implements ActionListener {
         view.setLocationRelativeTo(null);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.jAgregar) {
             // Obtener los valores de los campos del formulario

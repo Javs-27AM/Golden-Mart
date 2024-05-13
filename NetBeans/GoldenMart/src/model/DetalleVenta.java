@@ -18,13 +18,13 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class DetalleVenta {
-    private Connection con;
+    public Connection con;
     Conexion conexion = new Conexion();
-    private int idDetalleVenta;
-    private int idVenta;
-    private int idProducto;
-    private int cantidad;
-
+    public int idDetalleVenta;
+    public int idVenta;
+    public int idProducto;
+    public int cantidad;
+    public String nombre;
     // Constructor vacío
     public DetalleVenta() {
     }
@@ -69,6 +69,15 @@ public class DetalleVenta {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+    
+    public String getNombreProducto() {
+        return nombre;
+    }
+
+    public void setNombreProducto(String nombre) {
+        this.nombre = nombre;
+    }
+    
 
     
 public void crearDetalleVenta(int idVenta, List<Producto> productosVendidos) {
@@ -85,10 +94,10 @@ public void crearDetalleVenta(int idVenta, List<Producto> productosVendidos) {
             }
 
             // Mostrar mensaje de éxito
-            Object[] options = {"Aceptar"};
+           /* Object[] options = {"Aceptar"};
             JOptionPane optionPane = new JOptionPane("Detalle de la venta registrada correctamente.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
             JDialog dialog = optionPane.createDialog("Éxito");
-            dialog.setVisible(true);
+            dialog.setVisible(true);*/
 
         } catch (SQLException ex) {
             // Mostrar mensaje de error
@@ -100,9 +109,9 @@ public void crearDetalleVenta(int idVenta, List<Producto> productosVendidos) {
             ex.printStackTrace();
         }
     }
-
-public List<Producto> obtenerProductosVenta(int idVenta) {
-        List<Producto> productos = new ArrayList<>();
+/*
+public List<Venta> obtenerProductosVenta(int idVenta) {
+        List<Venta> ventas = new ArrayList<>();
         String sql = "SELECT p.* " +
                      "FROM detalleventa dv " +
                      "INNER JOIN producto p ON dv.IdProducto = p.IdProducto " +
@@ -113,10 +122,10 @@ public List<Producto> obtenerProductosVenta(int idVenta) {
             pstmt.setInt(1, idVenta);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Producto producto = new Producto();
-                    producto.setNombre(rs.getString("Nombre"));
-                    producto.setPrecio(rs.getFloat("Precio"));
-                    productos.add(producto);
+                    Venta venta = new Venta();
+                    venta.setNombre(rs.getString("Nombre"));
+                    venta.setPrecio(rs.getFloat("Precio"));
+                    ventas.add(venta);
                 }
             }
         } catch (SQLException ex) {
@@ -125,5 +134,6 @@ public List<Producto> obtenerProductosVenta(int idVenta) {
         }
 
         return productos;
-    }
+    
+}*/
 }

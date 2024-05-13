@@ -31,7 +31,6 @@ public class ControlAdministrador implements ActionListener{
 public ControlAdministrador() {
     this.view = new LoginAdmin();
     this.admin = new Admin();
-    
     this.view.jIngresar.addActionListener(this);
     this.view.jRegresar.addActionListener(this);
     this.view.jContrasena.addKeyListener(new KeyListener() {
@@ -58,6 +57,30 @@ public ControlAdministrador() {
             @Override
             public void keyReleased(KeyEvent e) {}
         });
+    
+    this.view.jUsuario.addKeyListener(new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // Obtiene el carácter ingresado
+            char c = e.getKeyChar();
+            // Verifica si el carácter es un espacio en blanco
+            if (c == ' ') {
+                // Consumir el evento para evitar que se escriba el espacio
+                e.consume();
+            }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                // Pasa al campo de contraseña cuando se presiona Enter en el campo de usuario
+                view.jContrasena.requestFocus();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {}
+    });
 }
 
 public void actionPerformed(ActionEvent e) {

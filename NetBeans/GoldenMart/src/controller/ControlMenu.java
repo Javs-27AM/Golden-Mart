@@ -4,6 +4,7 @@
  */
 package controller;
 import java.awt.event.*;
+import javax.swing.JFrame;
 import view.Menu;
 
 /**
@@ -18,6 +19,13 @@ public class ControlMenu implements ActionListener{
         this.view = new Menu();
         this.view.button_cajero.addActionListener(this);
         this.view.button_administrador.addActionListener(this);
+        
+    }
+    // Implementar los métodos de WindowListener
+    public void windowClosing(WindowEvent e) {
+        JFrame frame = (JFrame)e.getSource();
+        frame.dispose(); // Cerrar la ventana
+        System.exit(0); // Cerrar la aplicación
     }
     
     public void actionPerformed(ActionEvent e){

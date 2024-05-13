@@ -22,6 +22,7 @@ public class ControlSesionAdmin implements ActionListener {
         this.view.jRegistrar.addActionListener(this);
         this.view.jGestionar.addActionListener(this);
         this.view.jVentas.addActionListener(this);
+        this.view.jRegiCate.addActionListener(this);
     }
 
     @Override
@@ -43,10 +44,15 @@ public class ControlSesionAdmin implements ActionListener {
             ControlGestionarInventario controlGestionarInventario = new ControlGestionarInventario();
             //controlGestionarInventario.view.setVisible(true);
             view.dispose();
-        } else if (e.getSource() == view.jVentas) {
+         } else if (e.getSource() == view.jVentas) {
             // Mostrar la vista para registrar producto
-           //ControlRegistro controlRegistro = new ControlRegistro();
-           // view.dispose();
+           ControlGestionVentas controlGestionVentas = new ControlGestionVentas();
+           view.dispose();
+        }   
+         else if (e.getSource() == view.jRegiCate) {
+            // Mostrar la vista para registrar producto
+           ControlRegistroCategoria controlRegistroCategoria = new ControlRegistroCategoria();
+            view.dispose();
         }
     }
 }

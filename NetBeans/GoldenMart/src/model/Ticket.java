@@ -48,10 +48,10 @@ public class Ticket {
              PreparedStatement pstmt = con.prepareStatement(sql)) {
              pstmt.setInt(1, idVenta); // Usar el ID de la venta obtenido
              pstmt.executeUpdate();
-            Object[] options = {"Aceptar"};
+            /*Object[] options = {"Aceptar"};
             JOptionPane optionPane = new JOptionPane("Ticket generado correctamente.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
             JDialog dialog = optionPane.createDialog("Éxito");
-            dialog.setVisible(true);
+            dialog.setVisible(true);*/
         
         } catch (SQLException ex) {
             Object[] options = {"Aceptar"};

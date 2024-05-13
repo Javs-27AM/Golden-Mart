@@ -148,7 +148,10 @@ public class Producto {
     public String getImagen() {
         return imagen;
     }
-
+    
+    public void setProductosVendidos(List<Producto> productosVendidos) {
+    this.productosVendidos = productosVendidos;
+    }
     public List<Producto> getProductosVendidos() {
     return productosVendidos;
 }

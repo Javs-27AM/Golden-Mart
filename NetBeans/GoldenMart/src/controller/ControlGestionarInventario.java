@@ -108,6 +108,8 @@ public class ControlGestionarInventario implements ActionListener {
             cargarProductos();
         }
     }
+    
+    
     public void cargarProductos() {
     List<Producto> productos = productoModel.listaProductos();
     Object[][] data = new Object[productos.size()][9]; // Ajusta el tamaño según tus necesidades
