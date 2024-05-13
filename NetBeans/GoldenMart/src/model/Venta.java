@@ -12,12 +12,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class Venta {
     private Connection con;
     Conexion conexion = new Conexion();
-    private int idVenta;
+    public int idVenta;
     public LocalDate fechaVenta; // Cambiar el tipo de dato de Date a LocalDate
     public LocalTime horaVenta;
     private float total;
@@ -73,21 +74,38 @@ public class Venta {
         this.total = total;
     }
 
-    public void insertarVentaEnBD(Venta venta) {
+    public int insertarVentaEnBD(Venta venta) {
     String sql = "INSERT INTO Venta (FechaVenta, HoraVenta, Total) VALUES (?, ?, ?)";
+    idVenta = -1; // Inicializar el ID de venta con un valor negativo por defecto
     
     try (Connection con = conexion.getConnection();
-         PreparedStatement pstmt = con.prepareStatement(sql)) {
+         PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
         pstmt.setDate(1, java.sql.Date.valueOf(venta.getFechaVenta())); // Convertir LocalDate a java.sql.Date
         pstmt.setTime(2, java.sql.Time.valueOf(venta.getHoraVenta())); // Convertir LocalTime a java.sql.Time
         pstmt.setFloat(3, venta.getTotal());
         pstmt.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Venta registrada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        
+        // Obtener el ID generado para la venta
+        try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                idVenta = generatedKeys.getInt(1);
+            }
+        }
+        Object[] options = {"Aceptar"};
+        JOptionPane optionPane = new JOptionPane("Venta registrada correctamente.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+        JDialog dialog = optionPane.createDialog("Éxito");
+        dialog.setVisible(true);
     } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al registrar la venta.", "Error", JOptionPane.ERROR_MESSAGE);
+        Object[] options = {"Aceptar"};
+        JOptionPane optionPane = new JOptionPane("Error al registrar la venta.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+        JDialog dialog = optionPane.createDialog("Error");
+        dialog.setVisible(true);
         ex.printStackTrace();
     }
+    
+    return idVenta; // Devolver el ID de la venta insertada
 }
+
 
     public List<Venta> buscarVentas(String textoBusqueda) {
         List<Venta> ventas = new ArrayList<>();

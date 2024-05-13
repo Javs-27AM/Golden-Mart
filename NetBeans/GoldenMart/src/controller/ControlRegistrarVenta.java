@@ -12,6 +12,7 @@ import model.Venta;
 
 public class ControlRegistrarVenta {
     public ControlRealizarVenta controlRealizarVenta;
+    public int idVenta;
 
     public ControlRegistrarVenta(ControlRealizarVenta controlRealizarVenta) {
         this.controlRealizarVenta = controlRealizarVenta;
@@ -19,7 +20,7 @@ public class ControlRegistrarVenta {
     
   
     
-    public void insertarVenta(LocalDate fechaVenta, LocalTime horaVenta, float total) {
+    public int insertarVenta(LocalDate fechaVenta, LocalTime horaVenta, float total) {
         /*
         // Imprimir la información recibida en la consola
         System.out.println("Información recibida para insertar venta:");
@@ -29,8 +30,11 @@ public class ControlRegistrarVenta {
         */
         // Insertar la venta en la base de datos
         Venta venta = new Venta(fechaVenta, horaVenta, total);
-        venta.insertarVentaEnBD(venta);
+        idVenta = venta.insertarVentaEnBD(venta);
+        
+        return idVenta;
     }
+    
     
     public void insertarVentaConDetalle(LocalDate fechaVenta, LocalTime horaVenta, float total, List<Producto> productosVendidos) {
         /*

@@ -4,13 +4,14 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class Ticket {
-    private Connection con;
+    public Connection con;
     Conexion conexion = new Conexion();
-    private int idTicket;
-    private int idVenta;
+    public int idTicket;
+    public int idVenta;
     
     public Ticket() {
     }
@@ -39,17 +40,28 @@ public class Ticket {
 
  
 
-    public void crearTicket() {
-        String sql = "INSERT INTO Ticket (IdVenta) VALUES (?, ?)";
+    public void crearTicket(int idVenta) {
+        
+        String sql = "INSERT INTO Ticket (IdVenta) VALUES (?)";
 
         try (Connection con = conexion.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
-             pstmt.setInt(1, getIdVenta());
+             pstmt.setInt(1, idVenta); // Usar el ID de la venta obtenido
              pstmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Ticket generado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            Object[] options = {"Aceptar"};
+            JOptionPane optionPane = new JOptionPane("Ticket generado correctamente.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+            JDialog dialog = optionPane.createDialog("Éxito");
+            dialog.setVisible(true);
+        
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al generar el ticket.", "Error", JOptionPane.ERROR_MESSAGE);
+            Object[] options = {"Aceptar"};
+            JOptionPane optionPane = new JOptionPane("Error al generar el ticket.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+            JDialog dialog = optionPane.createDialog("Error");
+            dialog.setVisible(true);
+            
             ex.printStackTrace();
         }
     }
+    
+    
 }

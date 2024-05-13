@@ -33,6 +33,7 @@ import view.PagoTarjeta;
 public class ControlPagoTarjeta implements ActionListener {
     public PagoTarjeta view;
     public float totalVenta;
+    public int idVenta;  
     public LocalDate fechaVenta; // Cambiar el tipo de dato de Date a LocalDate
     public LocalTime horaVenta;
     public float cantidadPagada;
@@ -255,8 +256,14 @@ public class ControlPagoTarjeta implements ActionListener {
             controlTicket.mostrarTicketTarjeta(cantidadPagada, ultimosCuatroDigitosTarjeta, controlRealizarVenta.getProductosVendidos());
 
             ControlRegistrarVenta controlRegistrarVenta = new ControlRegistrarVenta(controlRealizarVenta);
-            controlRegistrarVenta.insertarVenta(fechaVenta, horaVenta, totalVenta);
+            idVenta = controlRegistrarVenta.insertarVenta(fechaVenta, horaVenta, totalVenta);
+                    
+            controlTicket.insertarTicketBD(idVenta);
             
+            ControlDetalleVenta controlDetalleVenta = new ControlDetalleVenta(controlRealizarVenta);
+            controlDetalleVenta.insertarDetalleVentaBD(idVenta, controlRealizarVenta.getProductosVendidos());
+            
+            controlRealizarVenta.reiniciarControlador();
             view.dispose();
         } else {
             mostrarMensaje("El pago no se pudo procesar. Por favor, intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);

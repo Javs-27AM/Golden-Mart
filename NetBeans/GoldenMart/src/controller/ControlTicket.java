@@ -10,7 +10,7 @@ package controller;
  */
 import java.util.List;
 import model.Producto;
-//import model.Ticket;
+import model.Ticket;
 import view.TicketVista;
 
 
@@ -45,5 +45,14 @@ public class ControlTicket   {
         view.setVisible(true);
 }
 
+
+    
+    public void insertarTicketBD(int idVenta) {
+    Ticket ticket = new Ticket(); // Crear una instancia de Ticket
+    ticket.setIdVenta(idVenta); // Establecer el ID de la venta
+    
+    // Insertar el ticket en la base de datos
+    ticket.crearTicket(idVenta);
+}
 
 }
