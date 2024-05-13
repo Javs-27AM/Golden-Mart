@@ -4,26 +4,14 @@ package controller;
  *
  * @author Javs
  */
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import model.Producto;
 import model.Venta;
 import model.DetalleVenta;
@@ -35,9 +23,7 @@ public class ControlGestionVentas implements ActionListener {
     public Producto productoModel;
     public Venta ventaModel;
     public DetalleVenta DetalleVentaModel;
-    private DefaultTableModel model;
-    private final int IMAGEN_COLUMN_WIDTH = 125;
-    private final int IMAGEN_COLUMN_HEIGHT = 125;
+    public DefaultTableModel model;
 
     public ControlGestionVentas() {
         this.view = new ReporteVentas();
@@ -61,23 +47,7 @@ public class ControlGestionVentas implements ActionListener {
                 //controlBuscar.cargarProductos(view.jVenta, textoBusqueda);
             }
         });
-        /*this.view.jVenta.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            int fila = view.jVenta.rowAtPoint(e.getPoint());
-            int columna = view.jVenta.columnAtPoint(e.getPoint());
-            if (fila >= 0 && columna == 7 || columna == 8) { // Columna de Modificar
-                int idProducto = (int) view.jVenta.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
-                ControlModificar controlModificar = new ControlModificar(idProducto);
-                controlModificar.view.setVisible(true);
-                view.dispose();
-            } else if (fila >= 0 && columna == 9) { // Columna de Eliminar
-                int idProducto = (int) view.jVenta.getValueAt(fila, 0); // Suponiendo que el ID del producto está en la primera columna
-                ControlEliminar controlEliminar = new ControlEliminar(idProducto);
-                view.dispose();
-            }
-        }
-    });*/
+        */
         
 
         this.ventaModel = new Venta();
@@ -92,12 +62,12 @@ public class ControlGestionVentas implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.jBuscar) {
-            //String textoBusqueda = view.jBusqueda.getText();
+            String textoBusqueda = view.jBusqueda.getText();
             //System.out.println("Texto de búsqueda: " + textoBusqueda);
-            // Aquí instanciamos el controlador ControlBuscar
-            //ControlBuscar controlBuscar = new ControlBuscar(view, productoModel);
+            // Aquí instanciamos el controlador ControlBuscarReporteVentas
+            ControlBuscarReporteVentas controlBuscarReporteVentas = new ControlBuscarReporteVentas(view, ventaModel);
             // Llamamos al método cargarProductos del controlador ControlBuscar
-            //controlBuscar.cargarProductos(view.jVenta, textoBusqueda);
+            controlBuscarReporteVentas.cargarVentas(view.jVenta, textoBusqueda);
         } else if (e.getSource() == view.jRegresar) {
             ControlSesionAdmin controlSesionAdmin = new ControlSesionAdmin();
             controlSesionAdmin.view.setVisible(true);

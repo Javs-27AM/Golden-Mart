@@ -48,7 +48,7 @@ public class ControlGestionarInventario implements ActionListener {
         this.view.jAgregar.addActionListener(this);
         this.view.jBuscar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
-        this.view.jActualizar.addActionListener(this);
+        this.view.jRegiCate.addActionListener(this);
         this.view.jBusqueda.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -104,8 +104,9 @@ public class ControlGestionarInventario implements ActionListener {
             controlSesionAdmin.view.setVisible(true);
             view.dispose();
         }
-        else if (e.getSource() == view.jActualizar) {
-            cargarProductos();
+        else if (e.getSource() == view.jRegiCate) {
+            ControlRegistroCategoria controlRegistroCategoria = new ControlRegistroCategoria();
+            view.dispose();
         }
     }
     

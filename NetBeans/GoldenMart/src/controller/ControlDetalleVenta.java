@@ -12,7 +12,6 @@ package controller;
 import java.util.List;
 import model.DetalleVenta;
 import model.Producto;
-import model.Ticket;
 
 
 public class ControlDetalleVenta   {

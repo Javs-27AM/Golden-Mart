@@ -3,6 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
+/**
+ *
+ * @author Javs
+ */
+
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,15 +24,12 @@ import view.LoginAdmin;
 
 
 
-/**
- *
- * @author Javs
- */
+
 public class ControlAdministrador implements ActionListener{
     public LoginAdmin view;
-    private Admin admin;
-    private Conexion conexion = new Conexion();
-    private Connection con = conexion.getConnection();
+    public Admin admin;
+    public Conexion conexion = new Conexion();
+    public Connection con = conexion.getConnection();
     
 
 public ControlAdministrador() {
@@ -83,7 +87,8 @@ public ControlAdministrador() {
     });
 }
 
-public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
     if (e.getSource() ==view.jIngresar) {
         String user = view.jUsuario.getText(); // Obtiene el usuario electrónico del campo de texto
         String contrasenia = view.jContrasena.getText(); // Obtiene la contraseña del campo de texto

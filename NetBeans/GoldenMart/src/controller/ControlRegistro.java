@@ -1,5 +1,11 @@
 package controller;
 
+/**
+ *
+ * @author Javs
+ */
+
+
 import java.awt.event.*;
 import java.sql.Connection;
 import javax.swing.ImageIcon;
@@ -9,15 +15,11 @@ import model.Conexion;
 import model.Producto;
 import view.RegistrarProducto;
 
-/**
- *
- * @author Javs
- */
 
 public class ControlRegistro implements ActionListener {
     public RegistrarProducto view;
-    private Producto producto;
-    private Connection con;
+    public Producto producto;
+    public Connection con;
     Conexion conexion = new Conexion();
 
     public ControlRegistro() {

@@ -13,100 +13,79 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import model.DetalleVenta;
 import model.Producto;
-import view.GestionarInventario;
+import model.Venta;
+import view.ReporteVentas;
 
-public class ControlBuscar {
+public class ControlBuscarReporteVentas {
     
-    public GestionarInventario view;
+    public ReporteVentas view;
     public Producto productoModel;
-    private final int IMAGEN_COLUMN_WIDTH = 125;
-    private final int IMAGEN_COLUMN_HEIGHT = 125;
+    public Venta ventaModel;
     public DefaultTableModel model;
 
-    public ControlBuscar(GestionarInventario view, Producto productoModel) {
+    public ControlBuscarReporteVentas(ReporteVentas view, Venta ventaModel) {
         this.view = view;
-        this.productoModel = productoModel;
+        this.ventaModel = ventaModel;
         this.view.jBusqueda.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 String textoBusqueda = view.jBusqueda.getText();
                 //System.out.println("Texto de búsqueda: " + textoBusqueda);
-                cargarProductos(view.jProducto, textoBusqueda);
+                cargarVentas(view.jVenta, textoBusqueda);
             }
         });
-        this.view.jBuscar.addActionListener(e -> buscarProducto());
+        this.view.jBuscar.addActionListener(e -> buscarVentas());
     }
 
-    private void buscarProducto() {
+    private void buscarVentas() {
         String textoBusqueda = view.jBusqueda.getText();
         //System.out.println("Texto de búsqueda: " + textoBusqueda);
-        cargarProductos(view.jProducto, textoBusqueda);
+        cargarVentas(view.jVenta, textoBusqueda);
     }
 
-     public void cargarProductos(JTable tabla, String textoBusqueda) {
-    List<Producto> productos = (textoBusqueda.isEmpty()) ? productoModel.listaProductos() : productoModel.buscarProductos(textoBusqueda);
-    Object[][] data = new Object[productos.size()][9]; // Ajusta el tamaño según tus necesidades
-    String[] columnNames = {"ID Producto", "Nombre", "Marca", "Contenido Neto","Categoria", "Precio", "Cantidad Disponible", "Imagen", "Modificar Producto", "Eliminar"};
-    for (int i = 0; i < productos.size(); i++) {
-        Producto producto = productos.get(i);
-        JButton botonModificar= new JButton("Modificar Producto");
-        JButton botonEliminar = new JButton("Eliminar");
-        String rutaImagen = producto.getImagen();
-        ImageIcon imageIcon = createImageIcon(rutaImagen);
-        JLabel imagenLabel = new JLabel(imageIcon);
-        imagenLabel.setPreferredSize(new Dimension(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT));
+     public void cargarVentas(JTable tabla, String textoBusqueda) {
+    List<Venta> ventas = ventaModel.listaVentas(); // Obtener todas las ventas
+    if (!textoBusqueda.isEmpty()) {
+        ventas = ventaModel.buscarVentas(textoBusqueda); // Filtrar ventas según el texto de búsqueda
+    }
+    Object[][] data = new Object[ventas.size()][5]; // Ajustar el tamaño según tus necesidades
+    String[] columnNames = {"ID Venta", "Fecha", "Hora", "Productos", "Total"};
+
+    for (int i = 0; i < ventas.size(); i++) {
+        Venta venta = ventas.get(i);
+
+        // Construir la cadena de productos vendidos
+        StringBuilder productosStr = new StringBuilder();
+        for (DetalleVenta detalle : venta.getDetallesVenta()) {
+            productosStr.append(detalle.getNombreProducto()).append(", ");
+        }
+        if (productosStr.length() >= 2) {
+        productosStr.delete(productosStr.length() - 2, productosStr.length() - 1);
+        }
+
         data[i] = new Object[]{
-            producto.getIdProducto(),
-            producto.getNombre(),
-            producto.getMarca(),
-            producto.getContenidoNeto(),
-            producto.getCategoria(),
-            producto.getPrecio(),
-            producto.getCantidadDisponible(),
-            imagenLabel,
-            botonModificar,
-            botonEliminar
+            venta.getIdVenta(),
+            venta.getFechaVenta(),
+            venta.getHoraVenta(),
+            productosStr.toString(),
+            venta.getTotal()
         };
     }
-    int[] nonEditableColumns = {0, 1, 2, 3, 4, 5, 6}; // Columnas de 0 a 5
-    NonEditableTableModel model = new NonEditableTableModel(data, columnNames, nonEditableColumns);
-    view.jProducto.setModel(model);
 
-            TableColumnModel columnModel = view.jProducto.getColumnModel();
-            for (int column = 0; column < view.jProducto.getColumnCount(); column++) {
-                if (column == 7) { // Columna de la imagen
-                    columnModel.getColumn(column).setPreferredWidth(IMAGEN_COLUMN_WIDTH);
-                    columnModel.getColumn(column).setMinWidth(IMAGEN_COLUMN_WIDTH);
-                    columnModel.getColumn(column).setMaxWidth(IMAGEN_COLUMN_WIDTH);
-                    columnModel.getColumn(column).setResizable(false);
-                    view.jProducto.setRowHeight(IMAGEN_COLUMN_HEIGHT);
-                } else {
-                    int width = 15;
-                    for (int row = 0; row < view.jProducto.getRowCount(); row++) {
-                        TableCellRenderer renderer = view.jProducto.getCellRenderer(row, column);
-                        Component comp = view.jProducto.prepareRenderer(renderer, row, column);
-                        width = Math.max(comp.getPreferredSize().width + 1, width);
-                    }
-                    columnModel.getColumn(column).setPreferredWidth(width);
-                }
-            }
-            view.jProducto.getColumnModel().getColumn(0).setMinWidth(0);
-            view.jProducto.getColumnModel().getColumn(0).setMaxWidth(0);
-            view.jProducto.getColumnModel().getColumn(0).setWidth(0);
-            view.jProducto.getColumnModel().getColumn(7).setCellRenderer(new ComponentCellRenderer());
-            view.jProducto.getColumnModel().getColumn(8).setCellRenderer(new ComponentCellRenderer());
-            
+    // Crear el modelo de la tabla utilizando DefaultTableModel
+    DefaultTableModel model = new DefaultTableModel(data, columnNames);
+    tabla.setModel(model);
+
+    // Ajustar la apariencia de las columnas para que se autoajusten al contenido
+    tabla.getColumnModel().getColumn(0).setPreferredWidth(70); // ID Venta
+    tabla.getColumnModel().getColumn(1).setPreferredWidth(100); // Fecha
+    tabla.getColumnModel().getColumn(2).setPreferredWidth(70); // Hora
+    tabla.getColumnModel().getColumn(4).setPreferredWidth(70); // Total
+    tabla.getColumnModel().getColumn(3).setPreferredWidth(800); // Anchura fija para la columna de Productos
+    tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 }
-     protected ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            ImageIcon icon = new ImageIcon(imgURL);
-            Image image = icon.getImage().getScaledInstance(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT, Image.SCALE_SMOOTH);
-            return new ImageIcon(image);
-        } else {
-            System.err.println("No se pudo encontrar el archivo de imagen: " + path);
-            return null;
-        }
-    }
+
+    
 }

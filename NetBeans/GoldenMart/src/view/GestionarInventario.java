@@ -45,7 +45,7 @@ public class GestionarInventario extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jProducto = new javax.swing.JTable();
         jRegresar = new javax.swing.JButton();
-        jActualizar = new javax.swing.JButton();
+        jRegiCate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestionar Inventario");
@@ -77,10 +77,10 @@ public class GestionarInventario extends javax.swing.JFrame {
 
         jRegresar.setText("Regresar");
 
-        jActualizar.setText("Actualizar Tabla");
-        jActualizar.addActionListener(new java.awt.event.ActionListener() {
+        jRegiCate.setText("Agregar Categoria");
+        jRegiCate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jActualizarActionPerformed(evt);
+                jRegiCateActionPerformed(evt);
             }
         });
 
@@ -93,10 +93,10 @@ public class GestionarInventario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 450, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 437, Short.MAX_VALUE)
                         .addComponent(jAgregar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jActualizar)
+                        .addComponent(jRegiCate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,7 +119,7 @@ public class GestionarInventario extends javax.swing.JFrame {
                         .addComponent(jAgregar)
                         .addComponent(jBuscar)
                         .addComponent(jBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jActualizar))
+                        .addComponent(jRegiCate))
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,18 +143,18 @@ public class GestionarInventario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jBusquedaActionPerformed
 
-    private void jActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jActualizarActionPerformed
+    private void jRegiCateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRegiCateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jActualizarActionPerformed
+    }//GEN-LAST:event_jRegiCateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton jActualizar;
     public javax.swing.JButton jAgregar;
     public javax.swing.JButton jBuscar;
     public javax.swing.JTextField jBusqueda;
     private javax.swing.JLabel jLabel1;
     public javax.swing.JTable jProducto;
+    public javax.swing.JButton jRegiCate;
     public javax.swing.JButton jRegresar;
     public javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

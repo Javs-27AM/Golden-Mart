@@ -1,16 +1,16 @@
 
 package model;
-
+/*
+ *
+ * @author Javs
+ */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-/*
- *
- * @author Javs
- */
+
 
 public class Categoria {
     public Connection con;

@@ -1,18 +1,19 @@
 package controller;
 
+
+/**
+ *
+ * @author Javs
+ */
+
 import java.awt.event.*;
 import java.sql.Connection;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import model.Conexion;
 import model.Categoria;
 import view.RegistrarCategoria;
 
-/**
- *
- * @author Javs
- */
 
 public class ControlRegistroCategoria implements ActionListener {
     public RegistrarCategoria view;

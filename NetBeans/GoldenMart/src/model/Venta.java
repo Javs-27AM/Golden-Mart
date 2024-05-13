@@ -16,13 +16,13 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class Venta {
-    private Connection con;
+    public Connection con;
     Conexion conexion = new Conexion();
     public int idVenta;
     public LocalDate fechaVenta; // Cambiar el tipo de dato de Date a LocalDate
     public LocalTime horaVenta;
-    private float total;
-    public List<DetalleVenta> detallesVenta; 
+    public float total;
+    public List<DetalleVenta> detallesVenta = new ArrayList<>(); 
     
     public Venta(int idVenta, LocalDate fechaVenta, LocalTime horaVenta, float total,  List<DetalleVenta> detallesVenta) {
         this.idVenta = idVenta;
@@ -48,7 +48,8 @@ public class Venta {
     
     public Venta(){
     }
-
+    
+    
     // Getters y setters para los atributos de la clase Venta
     // Métodos de la clase Venta
 
@@ -126,99 +127,127 @@ public class Venta {
     
 
     public List<Venta> buscarVentas(String textoBusqueda) {
-        List<Venta> ventas = new ArrayList<>();
-        String sql = "SELECT * FROM venta WHERE (IdVenta LIKE ? OR FechaVenta LIKE ? OR HoraVenta LIKE ? OR Total LIKE ?)";
-
-        try (Connection con = conexion.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql)) {
-            String parametroBusqueda = "%" + textoBusqueda + "%";
-            pstmt.setString(1, parametroBusqueda);
-            pstmt.setString(2, parametroBusqueda);
-            pstmt.setString(3, parametroBusqueda);
-            pstmt.setString(4, parametroBusqueda);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Venta venta = new Venta();
-                    venta.setIdVenta(rs.getInt("IdVenta"));
-                    venta.setFechaVenta(rs.getDate("FechaVenta").toLocalDate()); // Convertir java.sql.Date a LocalDate
-                    venta.setHoraVenta(rs.getTime("HoraVenta").toLocalTime()); // Convertir java.sql.Time a LocalTime
-                    venta.setTotal(rs.getFloat("Total"));
-                    ventas.add(venta);
-                }
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al buscar ventas.", "Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }
-
-        return ventas;
-}
-    
-    public List<Venta> listaVentas() {
     List<Venta> ventas = new ArrayList<>();
-    String sql = "SELECT Venta.IdVenta, Venta.FechaVenta, Venta.HoraVenta, Venta.Total, " +
-                 "GROUP_CONCAT(Producto.Nombre SEPARATOR ', ') AS Productos " +
+    String sql = "SELECT Venta.*, DetalleVenta.IdProducto, Producto.Nombre AS NombreProducto " +
                  "FROM Venta " +
-                 "INNER JOIN DetalleVenta ON Venta.IdVenta = DetalleVenta.IdVenta " +
-                 "INNER JOIN Producto ON DetalleVenta.IdProducto = Producto.IdProducto " +
-                 "GROUP BY Venta.IdVenta";
+                 "LEFT JOIN DetalleVenta ON Venta.IdVenta = DetalleVenta.IdVenta " +
+                 "LEFT JOIN Producto ON DetalleVenta.IdProducto = Producto.IdProducto " +
+                 "WHERE (Venta.IdVenta LIKE ? OR Venta.FechaVenta LIKE ? OR Venta.HoraVenta LIKE ? OR Venta.Total LIKE ?)";
 
     try (Connection con = conexion.getConnection();
-         PreparedStatement pstmt = con.prepareStatement(sql);
-         ResultSet rs = pstmt.executeQuery()) {
+         PreparedStatement pstmt = con.prepareStatement(sql)) {
+        String parametroBusqueda = "%" + textoBusqueda + "%";
+        pstmt.setString(1, parametroBusqueda);
+        pstmt.setString(2, parametroBusqueda);
+        pstmt.setString(3, parametroBusqueda);
+        pstmt.setString(4, parametroBusqueda);
 
-        while (rs.next()) {
-            Venta venta = new Venta();
-            venta.setIdVenta(rs.getInt("IdVenta"));
-            venta.setFechaVenta(rs.getDate("FechaVenta").toLocalDate());
-            venta.setHoraVenta(rs.getTime("HoraVenta").toLocalTime());
-            venta.setTotal(rs.getFloat("Total"));
+        try (ResultSet rs = pstmt.executeQuery()) {
+            int idVentaActual = -1;
+            Venta venta = null;
+            while (rs.next()) {
+                idVenta = rs.getInt("IdVenta");
+                if (idVenta != idVentaActual) {
+                    // Crear una nueva venta cuando cambia el ID de venta
+                    if (venta != null) {
+                        ventas.add(venta);
+                    }
+                    idVentaActual = idVenta;
+                    venta = new Venta();
+                    venta.setIdVenta(idVenta);
+                    venta.setFechaVenta(rs.getDate("FechaVenta").toLocalDate());
+                    venta.setHoraVenta(rs.getTime("HoraVenta").toLocalTime());
+                    venta.setTotal(rs.getFloat("Total"));
+                    venta.setDetallesVenta(new ArrayList<>()); // Inicializar la lista de detalles de venta
+                }
 
-            // Obtener la lista de detalles de venta y agregarla al objeto Venta
-            List<DetalleVenta> detalles = obtenerDetallesVentaPorIdVenta(venta.getIdVenta());
-            venta.setDetallesVenta(detalles);
-
-            ventas.add(venta);
+                // Agregar detalles de venta a la venta actual
+                int idProducto = rs.getInt("IdProducto");
+                if (idProducto != 0) {
+                    DetalleVenta detalle = new DetalleVenta();
+                    detalle.setIdProducto(idProducto);
+                    detalle.setNombreProducto(rs.getString("NombreProducto"));
+                    venta.getDetallesVenta().add(detalle);
+                }
+            }
+            // Agregar la última venta a la lista después de salir del bucle
+            if (venta != null) {
+                ventas.add(venta);
+            }
         }
     } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al obtener la lista de ventas.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Error al buscar ventas.", "Error", JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
     }
 
     return ventas;
 }
+    
+    
+    public List<Venta> listaVentas() {
+        List<Venta> ventas = new ArrayList<>();
+        String sql = "SELECT Venta.IdVenta, Venta.FechaVenta, Venta.HoraVenta, Venta.Total, " +
+                     "GROUP_CONCAT(Producto.Nombre SEPARATOR ', ') AS Productos " +
+                     "FROM Venta " +
+                     "INNER JOIN DetalleVenta ON Venta.IdVenta = DetalleVenta.IdVenta " +
+                     "INNER JOIN Producto ON DetalleVenta.IdProducto = Producto.IdProducto " +
+                     "GROUP BY Venta.IdVenta";
 
-public List<DetalleVenta> obtenerDetallesVentaPorIdVenta(int idVenta) {
-    List<DetalleVenta> detalles = new ArrayList<>();
-    String sql = "SELECT DetalleVenta.*, Producto.Nombre AS NombreProducto " +
-                 "FROM DetalleVenta " +
-                 "INNER JOIN Producto ON DetalleVenta.IdProducto = Producto.IdProducto " +
-                 "WHERE DetalleVenta.IdVenta = ?";
+        try (Connection con = conexion.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
 
-    try (Connection con = conexion.getConnection();
-         PreparedStatement pstmt = con.prepareStatement(sql)) {
-        pstmt.setInt(1, idVenta);
-        ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Venta venta = new Venta();
+                venta.setIdVenta(rs.getInt("IdVenta"));
+                venta.setFechaVenta(rs.getDate("FechaVenta").toLocalDate());
+                venta.setHoraVenta(rs.getTime("HoraVenta").toLocalTime());
+                venta.setTotal(rs.getFloat("Total"));
 
-        while (rs.next()) {
-            DetalleVenta detalle = new DetalleVenta();
-            detalle.setIdDetalleVenta(rs.getInt("IdDetalleVenta"));
-            detalle.setIdVenta(rs.getInt("IdVenta"));
-            detalle.setIdProducto(rs.getInt("IdProducto"));
-            detalle.setCantidad(rs.getInt("Cantidad"));
-            // Ahora también obtenemos el nombre del producto desde la consulta
-            String nombreProducto = rs.getString("NombreProducto");
-            detalle.setNombreProducto(nombreProducto);
-            detalles.add(detalle);
+                // Obtener la lista de detalles de venta y agregarla al objeto Venta
+                List<DetalleVenta> detalles = obtenerDetallesVentaPorIdVenta(venta.getIdVenta());
+                venta.setDetallesVenta(detalles);
+
+                ventas.add(venta);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener la lista de ventas.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al obtener los detalles de venta.", "Error", JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
+
+        return ventas;
     }
 
-    return detalles;
-}
+    public List<DetalleVenta> obtenerDetallesVentaPorIdVenta(int idVenta) {
+        List<DetalleVenta> detalles = new ArrayList<>();
+        String sql = "SELECT DetalleVenta.*, Producto.Nombre AS NombreProducto " +
+                     "FROM DetalleVenta " +
+                     "INNER JOIN Producto ON DetalleVenta.IdProducto = Producto.IdProducto " +
+                     "WHERE DetalleVenta.IdVenta = ?";
+
+        try (Connection con = conexion.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, idVenta);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                DetalleVenta detalle = new DetalleVenta();
+                detalle.setIdDetalleVenta(rs.getInt("IdDetalleVenta"));
+                detalle.setIdVenta(rs.getInt("IdVenta"));
+                detalle.setIdProducto(rs.getInt("IdProducto"));
+                detalle.setCantidad(rs.getInt("Cantidad"));
+                // Ahora también obtenemos el nombre del producto desde la consulta
+                String nombreProducto = rs.getString("NombreProducto");
+                detalle.setNombreProducto(nombreProducto);
+                detalles.add(detalle);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al obtener los detalles de venta.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+
+        return detalles;
+    }
 
 
 

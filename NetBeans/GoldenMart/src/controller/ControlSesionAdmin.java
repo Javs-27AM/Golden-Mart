@@ -4,14 +4,14 @@
  */
 package controller;
 
-import java.awt.event.*;
-import javax.swing.JOptionPane;
-import view.SesionAdmin;
-
 /**
  *
  * @author Javs
  */
+import java.awt.event.*;
+import javax.swing.JOptionPane;
+import view.SesionAdmin;
+
 
 public class ControlSesionAdmin implements ActionListener {
     public SesionAdmin view;

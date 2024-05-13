@@ -29,10 +29,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="450" max="32767" attributes="0"/>
+                      <EmptySpace pref="437" max="32767" attributes="0"/>
                       <Component id="jAgregar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jActualizar" min="-2" max="-2" attributes="0"/>
+                      <Component id="jRegiCate" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jBuscar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -61,7 +61,7 @@
                       <Component id="jAgregar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jBusqueda" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jActualizar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jRegiCate" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -138,12 +138,12 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="jActualizar">
+    <Component class="javax.swing.JButton" name="jRegiCate">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Actualizar Tabla"/>
+        <Property name="text" type="java.lang.String" value="Agregar Categoria"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jActualizarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRegiCateActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

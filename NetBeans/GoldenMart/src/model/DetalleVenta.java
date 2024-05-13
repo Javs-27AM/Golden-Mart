@@ -10,9 +10,7 @@ package model;
  */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -109,31 +107,5 @@ public void crearDetalleVenta(int idVenta, List<Producto> productosVendidos) {
             ex.printStackTrace();
         }
     }
-/*
-public List<Venta> obtenerProductosVenta(int idVenta) {
-        List<Venta> ventas = new ArrayList<>();
-        String sql = "SELECT p.* " +
-                     "FROM detalleventa dv " +
-                     "INNER JOIN producto p ON dv.IdProducto = p.IdProducto " +
-                     "WHERE dv.IdVenta = ?";
 
-        try (Connection con = conexion.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setInt(1, idVenta);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Venta venta = new Venta();
-                    venta.setNombre(rs.getString("Nombre"));
-                    venta.setPrecio(rs.getFloat("Precio"));
-                    ventas.add(venta);
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            // Manejar la excepción según tu necesidad
-        }
-
-        return productos;
-    
-}*/
 }
