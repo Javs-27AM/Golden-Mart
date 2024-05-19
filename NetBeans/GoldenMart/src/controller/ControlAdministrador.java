@@ -91,8 +91,11 @@ public ControlAdministrador() {
     public void actionPerformed(ActionEvent e) {
     if (e.getSource() ==view.jIngresar) {
         String user = view.jUsuario.getText(); // Obtiene el usuario electrónico del campo de texto
-        String contrasenia = view.jContrasena.getText(); // Obtiene la contraseña del campo de texto
-        //System.out.println("Usuario ingresado: " + user);
+        char[] contraseniaChars = view.jContrasena.getPassword(); // Obtiene la contraseña como una matriz de caracteres
+        
+        // Convierte la contraseña de matriz de caracteres a cadena
+        String contrasenia = new String(contraseniaChars);
+        
           //  System.out.println("Contraseña ingresada: " + contrasenia);
          if (user.isEmpty() || contrasenia.isEmpty()) {
          JOptionPane optionPane = new JOptionPane("Por favor ingrese usuario y contraseña", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{ "Aceptar" });

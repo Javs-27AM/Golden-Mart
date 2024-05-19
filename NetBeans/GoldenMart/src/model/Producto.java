@@ -65,6 +65,10 @@ public class Producto {
         this.descripcion = descripcion;
     }
     
+    public Producto(int idProducto) {
+        this.idProducto = idProducto;
+        
+    }
     
     public Producto() {
     }
