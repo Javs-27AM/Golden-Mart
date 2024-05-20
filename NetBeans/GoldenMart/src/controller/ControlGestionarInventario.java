@@ -37,7 +37,6 @@ public class ControlGestionarInventario implements ActionListener {
 
     public ControlGestionarInventario() {
         this.view = new GestionarInventario();
-        this.view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.view.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -58,6 +57,7 @@ public class ControlGestionarInventario implements ActionListener {
                 controlBuscar.cargarProductos(view.jProducto, textoBusqueda);
             }
         });
+        this.view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.view.jProducto.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {

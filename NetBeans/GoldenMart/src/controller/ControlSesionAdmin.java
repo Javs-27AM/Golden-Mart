@@ -9,6 +9,7 @@ package controller;
  * @author Javs
  */
 import java.awt.event.*;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import view.SesionAdmin;
 
@@ -23,6 +24,14 @@ public class ControlSesionAdmin implements ActionListener {
         this.view.jGestionar.addActionListener(this);
         this.view.jVentas.addActionListener(this);
         this.view.jRegiCate.addActionListener(this);
+        this.view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.view.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Simulamos el evento de clic en el botón "Regresar"
+                actionPerformed(new ActionEvent(view.jCerrarSesion, ActionEvent.ACTION_PERFORMED, "Cerrar Sesión"));
+            }
+        });
     }
 
     @Override
