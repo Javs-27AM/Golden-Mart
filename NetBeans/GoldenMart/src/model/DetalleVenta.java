@@ -10,31 +10,29 @@ package model;
  */
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 public class DetalleVenta {
-    private Connection con;
+    public Connection con;
     Conexion conexion = new Conexion();
-    private int idDetalleVenta;
-    private int idVenta;
-    private int idProducto;
-    private int cantidad;
-    private float precioUnitario;
-
+    public int idDetalleVenta;
+    public int idVenta;
+    public int idProducto;
+    public int cantidad;
+    public String nombre;
     // Constructor vacío
     public DetalleVenta() {
     }
 
     // Constructor con todos los atributos
-    public DetalleVenta(int idDetalleVenta, int idVenta, int idProducto, int cantidad, float precioUnitario) {
+    public DetalleVenta(int idDetalleVenta, int idVenta, int idProducto, int cantidad) {
         this.idDetalleVenta = idDetalleVenta;
         this.idVenta = idVenta;
         this.idProducto = idProducto;
         this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
     }
 
     // Getters y setters
@@ -69,39 +67,45 @@ public class DetalleVenta {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-
-    public float getPrecioUnitario() {
-        return precioUnitario;
+    
+    public String getNombreProducto() {
+        return nombre;
     }
 
-    public void setPrecioUnitario(float precioUnitario) {
-        this.precioUnitario = precioUnitario;
+    public void setNombreProducto(String nombre) {
+        this.nombre = nombre;
     }
+    
 
-
-public List<Producto> obtenerProductosVenta(int idVenta) {
-        List<Producto> productos = new ArrayList<>();
-        String sql = "SELECT p.* " +
-                     "FROM detalleventa dv " +
-                     "INNER JOIN producto p ON dv.IdProducto = p.IdProducto " +
-                     "WHERE dv.IdVenta = ?";
+    
+public void crearDetalleVenta(int idVenta, List<Producto> productosVendidos) {
+        String sql = "INSERT INTO DetalleVenta (IdVenta, IdProducto, Cantidad) VALUES (?, ?, 1)";
 
         try (Connection con = conexion.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setInt(1, idVenta);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Producto producto = new Producto();
-                    producto.setNombre(rs.getString("Nombre"));
-                    producto.setPrecio(rs.getFloat("Precio"));
-                    productos.add(producto);
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            // Manejar la excepción según tu necesidad
-        }
 
-        return productos;
+            for (Producto producto : productosVendidos) {
+                pstmt.setInt(1, idVenta);
+                pstmt.setInt(2, producto.getIdProducto()); // Suponiendo que producto.getId() devuelve el ID del producto
+               // pstmt.setInt(3, producto.getCantidadDisponible()); // Suponiendo que producto.getCantidad() devuelve la cantidad vendida
+                pstmt.executeUpdate();
+            }
+
+            // Mostrar mensaje de éxito
+           /* Object[] options = {"Aceptar"};
+            JOptionPane optionPane = new JOptionPane("Detalle de la venta registrada correctamente.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+            JDialog dialog = optionPane.createDialog("Éxito");
+            dialog.setVisible(true);*/
+
+        } catch (SQLException ex) {
+            // Mostrar mensaje de error
+            Object[] options = {"Aceptar"};
+            JOptionPane optionPane = new JOptionPane("Error al registrar el detalle de la venta.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+            JDialog dialog = optionPane.createDialog("Error");
+            dialog.setVisible(true);
+            
+            ex.printStackTrace();
+        }
     }
+
 }

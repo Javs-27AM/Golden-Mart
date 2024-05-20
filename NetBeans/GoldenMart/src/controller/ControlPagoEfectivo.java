@@ -27,6 +27,7 @@ import view.PagoEfectivo;
 
 public class ControlPagoEfectivo implements ActionListener {
     public PagoEfectivo view;
+    public int idVenta;    
     public float totalVenta;
     public LocalDate fechaVenta; // Cambiar el tipo de dato de Date a LocalDate
     public LocalTime horaVenta;
@@ -110,8 +111,12 @@ public class ControlPagoEfectivo implements ActionListener {
                     controlTicket.mostrarTicket(cantidadPagada, cambio, controlRealizarVenta.getProductosVendidos());
 
                     ControlRegistrarVenta controlRegistrarVenta = new ControlRegistrarVenta(controlRealizarVenta);
-                    controlRegistrarVenta.insertarVenta(fechaVenta, horaVenta, totalVenta);
-                
+                    idVenta = controlRegistrarVenta.insertarVenta(fechaVenta, horaVenta, totalVenta);
+                    
+                    controlTicket.insertarTicketBD(idVenta);
+                    
+                    ControlDetalleVenta controlDetalleVenta = new ControlDetalleVenta(controlRealizarVenta);
+                    controlDetalleVenta.insertarDetalleVentaBD(idVenta, controlRealizarVenta.getProductosVendidos());
                     //controlRegistrarVenta.insertarVentaConDetalle(fechaVenta, horaVenta, totalVenta, controlRealizarVenta.getProductosVendidos());
                     controlRealizarVenta.reiniciarControlador();
                     

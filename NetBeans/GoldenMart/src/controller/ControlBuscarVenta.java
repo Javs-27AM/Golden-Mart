@@ -1,4 +1,8 @@
 package controller;
+/*
+ *
+ * @author Javs
+ */
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -10,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import model.Producto;
@@ -18,11 +21,11 @@ import view.RealizarVenta;
 
 public class ControlBuscarVenta {
     
-    private RealizarVenta view;
-    private Producto productoModel;
+    public RealizarVenta view;
+    public Producto productoModel;
     private final int IMAGEN_COLUMN_WIDTH = 125;
     private final int IMAGEN_COLUMN_HEIGHT = 125;
-    private DefaultTableModel model;
+    //public DefaultTableModel model;
 
     public ControlBuscarVenta(RealizarVenta view, Producto productoModel) {
         this.view = view;

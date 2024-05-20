@@ -1,4 +1,8 @@
 package controller;
+/*
+ *
+ * @author Javs
+ */
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,11 +22,11 @@ import view.GestionarInventario;
 
 public class ControlBuscar {
     
-    private GestionarInventario view;
-    private Producto productoModel;
+    public GestionarInventario view;
+    public Producto productoModel;
     private final int IMAGEN_COLUMN_WIDTH = 125;
     private final int IMAGEN_COLUMN_HEIGHT = 125;
-    private DefaultTableModel model;
+    public DefaultTableModel model;
 
     public ControlBuscar(GestionarInventario view, Producto productoModel) {
         this.view = view;

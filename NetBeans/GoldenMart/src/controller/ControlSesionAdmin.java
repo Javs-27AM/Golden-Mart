@@ -4,29 +4,28 @@
  */
 package controller;
 
-import java.awt.event.*;
-import java.sql.Connection;
-import javax.swing.JOptionPane;
-import model.Conexion;
-import view.SesionAdmin;
-
 /**
  *
  * @author Javs
  */
+import java.awt.event.*;
+import javax.swing.JOptionPane;
+import view.SesionAdmin;
+
 
 public class ControlSesionAdmin implements ActionListener {
     public SesionAdmin view;
-    private Conexion conexion = new Conexion();
-    private Connection con = conexion.getConnection();
 
     public ControlSesionAdmin() {
         this.view = new SesionAdmin();
         this.view.jCerrarSesion.addActionListener(this);
         this.view.jRegistrar.addActionListener(this);
         this.view.jGestionar.addActionListener(this);
+        this.view.jVentas.addActionListener(this);
+        this.view.jRegiCate.addActionListener(this);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.jCerrarSesion) {
             Object[] options = {"Sí", "No"};
@@ -43,9 +42,17 @@ public class ControlSesionAdmin implements ActionListener {
             view.dispose();
         } else if (e.getSource() == view.jGestionar) {
             ControlGestionarInventario controlGestionarInventario = new ControlGestionarInventario();
-            controlGestionarInventario.view.setVisible(true);
+            //controlGestionarInventario.view.setVisible(true);
+            view.dispose();
+         } else if (e.getSource() == view.jVentas) {
+            // Mostrar la vista para registrar producto
+           ControlGestionVentas controlGestionVentas = new ControlGestionVentas();
+           view.dispose();
+        }   
+         else if (e.getSource() == view.jRegiCate) {
+            // Mostrar la vista para registrar producto
+           ControlRegistroCategoria controlRegistroCategoria = new ControlRegistroCategoria();
             view.dispose();
         }
     }
 }
-

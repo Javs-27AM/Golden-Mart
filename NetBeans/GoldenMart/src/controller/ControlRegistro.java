@@ -1,5 +1,11 @@
 package controller;
 
+/**
+ *
+ * @author Javs
+ */
+
+
 import java.awt.event.*;
 import java.sql.Connection;
 import javax.swing.ImageIcon;
@@ -9,15 +15,11 @@ import model.Conexion;
 import model.Producto;
 import view.RegistrarProducto;
 
-/**
- *
- * @author Javs
- */
 
 public class ControlRegistro implements ActionListener {
     public RegistrarProducto view;
-    private Producto producto;
-    private Connection con;
+    public Producto producto;
+    public Connection con;
     Conexion conexion = new Conexion();
 
     public ControlRegistro() {
@@ -27,12 +29,20 @@ public class ControlRegistro implements ActionListener {
         this.view.jAgregar.addActionListener(this);
         this.view.jCancelar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
+        this.view.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Simular el evento de clic en el botón "Regresar"
+                actionPerformed(new ActionEvent(view.jRegresar, ActionEvent.ACTION_PERFORMED, "Regresar"));
+            }
+        });
     }
 
     public void iniciar() {
         view.setLocationRelativeTo(null);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.jAgregar) {
             // Obtener los valores de los campos del formulario

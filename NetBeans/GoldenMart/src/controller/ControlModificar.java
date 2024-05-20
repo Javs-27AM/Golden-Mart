@@ -50,8 +50,14 @@ import view.ModificarProducto;
         this.view.jModificar.addActionListener(this);
         this.view.jCancelar.addActionListener(this);
         this.view.jRegresar.addActionListener(this);
+        this.view.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Simular el evento de clic en el botón "Regresar"
+                actionPerformed(new ActionEvent(view.jRegresar, ActionEvent.ACTION_PERFORMED, "Regresar"));
+            }
+        });
 
-        // Aquí puedes realizar acciones adicionales con el ID del producto, si es necesario
     }
 
     public void iniciar() {

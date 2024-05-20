@@ -1,12 +1,14 @@
 package model;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  *
  * @author Javs
  */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
 public class Conexion {
     String hostname = "localhost";
     String username = "root";

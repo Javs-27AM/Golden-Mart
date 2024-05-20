@@ -49,10 +49,10 @@ public class ControlRealizarVenta implements ActionListener {
     public Producto productoModel;
     public Venta ventaModel;
     public float totalVenta; 
-    private DefaultTableModel model;
-    private final int IMAGEN_COLUMN_WIDTH = 125;
-    private final int IMAGEN_COLUMN_HEIGHT = 125;
-    private List<Producto> productosVendidos = new ArrayList<>();
+    public DefaultTableModel model;
+    public final int IMAGEN_COLUMN_WIDTH = 125;
+    public final int IMAGEN_COLUMN_HEIGHT = 125;
+    public List<Producto> productosVendidos = new ArrayList<>();
     public ControlTicket controlTicket;
 
     public ControlRealizarVenta() {

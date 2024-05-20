@@ -15,6 +15,7 @@ public class SesionAdmin extends javax.swing.JFrame {
      */
     public SesionAdmin() {
         initComponents();
+        setVisible(true);
         setResizable(false);
     }
 
@@ -34,6 +35,10 @@ public class SesionAdmin extends javax.swing.JFrame {
         jRegistrar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jGestionar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jVentas = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jRegiCate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Administrador");
@@ -62,6 +67,19 @@ public class SesionAdmin extends javax.swing.JFrame {
 
         jGestionar.setText("Gestionar Inventario");
 
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ventas_mini.png"))); // NOI18N
+
+        jVentas.setText("Reporte de Ventas");
+        jVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jVentasActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/categorias.png"))); // NOI18N
+
+        jRegiCate.setText("Registrar Categoria");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,38 +93,57 @@ public class SesionAdmin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jLabel4))
+                        .addContainerGap()
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(jGestionar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(152, 152, 152))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jRegistrar)
-                        .addGap(129, 129, 129))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(175, 175, 175)
+                        .addComponent(jLabel5)
+                        .addGap(167, 167, 167)
+                        .addComponent(jLabel6)))
+                .addContainerGap(170, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 139, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jVentas)
+                            .addComponent(jGestionar))
+                        .addGap(115, 115, 115)
+                        .addComponent(jRegiCate))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(23, 23, 23))
+                            .addComponent(jRegistrar, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGap(145, 145, 145))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(114, 114, 114)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRegistrar)
-                    .addComponent(jGestionar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRegistrar)
+                            .addComponent(jGestionar))
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel5))
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jVentas)
+                    .addComponent(jRegiCate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCerrarSesion)
@@ -124,6 +161,10 @@ public class SesionAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jRegistrarActionPerformed
 
+    private void jVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVentasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jVentasActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -133,6 +174,10 @@ public class SesionAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    public javax.swing.JButton jRegiCate;
     public javax.swing.JButton jRegistrar;
+    public javax.swing.JButton jVentas;
     // End of variables declaration//GEN-END:variables
 }

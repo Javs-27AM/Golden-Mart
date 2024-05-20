@@ -24,7 +24,7 @@ import javax.swing.JTextArea;
 
 
 public class Producto {
-    private Connection con;
+    public Connection con;
     Conexion conexion = new Conexion();
     private int idProducto;
     private String nombre;
@@ -35,8 +35,8 @@ public class Producto {
     private String marca;
     private int cantidadDisponible;
     private String imagen;
-    private List<Producto> productosVendidos = new ArrayList<>();
-    private Map<Integer, Integer> contadorProductosVendidos = new HashMap<>();
+    public List<Producto> productosVendidos = new ArrayList<>();
+    public Map<Integer, Integer> contadorProductosVendidos = new HashMap<>();
 
     
     
@@ -65,6 +65,10 @@ public class Producto {
         this.descripcion = descripcion;
     }
     
+    public Producto(int idProducto) {
+        this.idProducto = idProducto;
+        
+    }
     
     public Producto() {
     }
@@ -148,7 +152,10 @@ public class Producto {
     public String getImagen() {
         return imagen;
     }
-
+    
+    public void setProductosVendidos(List<Producto> productosVendidos) {
+    this.productosVendidos = productosVendidos;
+    }
     public List<Producto> getProductosVendidos() {
     return productosVendidos;
 }

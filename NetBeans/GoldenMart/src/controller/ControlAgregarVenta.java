@@ -1,5 +1,8 @@
 package controller;
-
+/**
+ *
+ * @author Javs
+ */
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -7,8 +10,8 @@ import javax.swing.JTextArea;
 import model.Producto;
 
 public class ControlAgregarVenta {
-    private List<Producto> productosVendidos;
-    private Producto producto;
+    public List<Producto> productosVendidos;
+    public Producto producto;
 
     public ControlAgregarVenta(int idProductoAgregar, JTextArea textArea, List<Producto> productosVendidos) {
         this.productosVendidos = productosVendidos;
@@ -39,12 +42,20 @@ public class ControlAgregarVenta {
                     dialog.setVisible(true);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "No se encontró ningún producto con el ID especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    Object[] options = {"Aceptar"};
+                    JOptionPane optionPane = new JOptionPane("No se encontró ningún producto con el ID especificado.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                    JDialog dialog = optionPane.createDialog("Error");
+                    dialog.setVisible(true);
+
             }
         } catch (Exception ex) {
             // Manejo de la excepción, muestra un mensaje de error
-            JOptionPane.showMessageDialog(null, "Error al agregar el producto al carrito: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane optionPane = new JOptionPane("Error al agregar el producto al carrito: " + ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            JDialog dialog = optionPane.createDialog("Error");
+            dialog.setVisible(true);
             ex.printStackTrace();
+
+
         }
     }
 
