@@ -109,7 +109,7 @@ public class RegistrarProducto extends javax.swing.JFrame {
 
         jLabel8.setText("Categoría:");
 
-        jCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Perecedero", "Lacteos", "Abarrotes", "Panaderia", "Pastas y Cereales" }));
+        jCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Perecedero", "Lacteos", "Abarrotes", "Panaderia", "Pastas y Cereales", "Mascotas" }));
         jCategoria.setToolTipText("");
         jCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

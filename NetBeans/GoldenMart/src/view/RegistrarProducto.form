@@ -280,13 +280,14 @@
     <Component class="javax.swing.JComboBox" name="jCategoria">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="6">
+          <StringArray count="7">
             <StringItem index="0" value=""/>
             <StringItem index="1" value="Perecedero"/>
             <StringItem index="2" value="Lacteos"/>
             <StringItem index="3" value="Abarrotes"/>
             <StringItem index="4" value="Panaderia"/>
             <StringItem index="5" value="Pastas y Cereales"/>
+            <StringItem index="6" value="Mascotas"/>
           </StringArray>
         </Property>
         <Property name="toolTipText" type="java.lang.String" value=""/>

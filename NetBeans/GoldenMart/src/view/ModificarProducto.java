@@ -111,7 +111,7 @@ public class ModificarProducto extends javax.swing.JFrame {
 
         jLabel8.setText("Categoría:");
 
-        jCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Perecedero", "Lacteos", "Abarrotes", "Panaderia", "Pastas y Cereales" }));
+        jCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Perecedero", "Lacteos", "Abarrotes", "Panaderia", "Pastas y Cereales", "Mascotas" }));
         jCategoria.setToolTipText("");
         jCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,9 +166,7 @@ public class ModificarProducto extends javax.swing.JFrame {
                                             .addComponent(jCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(82, 82, 82)
-                                                .addComponent(jLabel2))
+                                            .addComponent(jLabel2)
                                             .addComponent(jLabel1))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
