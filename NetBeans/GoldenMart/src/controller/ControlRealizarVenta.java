@@ -239,7 +239,7 @@ public class ControlRealizarVenta implements ActionListener {
             Image image = icon.getImage().getScaledInstance(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT, Image.SCALE_SMOOTH);
             return new ImageIcon(image);
         } else {
-           // System.err.println("No se pudo encontrar la imagen predeterminada: " + rutaImagenError);
+            //System.err.println("No se pudo encontrar la imagen predeterminada: " + rutaImagenError);
             return null;
         }
     }

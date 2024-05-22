@@ -132,9 +132,9 @@ public class ControlRegistro implements ActionListener {
 
             try {
                 int cantidad = Integer.parseInt(cantidadText);
-                // Validar que la cantidad sea mayor o igual a cero
-                if (cantidad < 0) {
-                    JOptionPane optionPane = new JOptionPane("La cantidad debe ser mayor o igual a cero.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
+                // Validar que la cantidad sea mayor a cero
+                if (cantidad <= 0) {
+                    JOptionPane optionPane = new JOptionPane("La cantidad debe ser mayor a cero.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
                     JDialog dialog = optionPane.createDialog("Error");
                     dialog.setVisible(true);
                     return;
@@ -145,6 +145,7 @@ public class ControlRegistro implements ActionListener {
                 dialog.setVisible(true);
                 return;
             }
+
 
             // Validar que el campo de descripción no esté vacío
             if (descripcion.isEmpty()) {

@@ -167,16 +167,28 @@ public class ControlGestionarInventario implements ActionListener {
     
     
     protected ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = getClass().getResource(path);
-        if (imgURL != null) {
-            ImageIcon icon = new ImageIcon(imgURL);
+    java.net.URL imgURL = getClass().getResource(path);
+    if (imgURL != null) {
+        ImageIcon icon = new ImageIcon(imgURL);
+        Image image = icon.getImage().getScaledInstance(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT, Image.SCALE_SMOOTH);
+        return new ImageIcon(image);
+    } else {
+        //System.err.println("No se pudo encontrar el archivo de imagen: " + path);
+        // Intentar cargar la imagen predeterminada
+        String rutaImagenError = "/imagenes/default.png";
+        java.net.URL errorImgURL = getClass().getResource(rutaImagenError);
+        if (errorImgURL != null) {
+            ImageIcon icon = new ImageIcon(errorImgURL);
             Image image = icon.getImage().getScaledInstance(IMAGEN_COLUMN_WIDTH, IMAGEN_COLUMN_HEIGHT, Image.SCALE_SMOOTH);
             return new ImageIcon(image);
         } else {
-            //System.err.println("No se pudo encontrar el archivo de imagen: " + path);
+            //System.err.println("No se pudo encontrar la imagen predeterminada: " + rutaImagenError);
             return null;
         }
     }
+}
+
+    
     
    public void cargarProductos(JTable tabla, String textoBusqueda) {
     List<Producto> productos = (textoBusqueda.isEmpty()) ? productoModel.listaProductos() : productoModel.buscarProductos(textoBusqueda);
