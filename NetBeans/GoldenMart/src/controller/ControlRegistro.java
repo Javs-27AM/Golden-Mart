@@ -56,7 +56,7 @@ public class ControlRegistro implements ActionListener {
             String descripcion = view.jDescripcion.getText();
             // Mensaje personalizado para el botón de aceptar
             Object[] options = {"Aceptar"};
-            String rutaImagenError = "ruta/a/la/imagen_de_error.png"; 
+            String rutaImagenError = "/imagenes/default.png"; 
 
             // Cargar la imagen de error
             ImageIcon imagenError = new ImageIcon(rutaImagenError);
