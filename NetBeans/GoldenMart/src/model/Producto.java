@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -362,7 +363,13 @@ public class Producto {
         // Verificar si hay suficiente cantidad disponible del producto
         if (producto.getCantidadDisponible() > 0) {
             // Mostrar cuadro de diálogo con un spinner para que el usuario seleccione la cantidad
-            JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 0, producto.getCantidadDisponible(), 0));
+            JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, producto.getCantidadDisponible(), 1));
+            
+            // Bloquear la edición del spinner
+            JComponent editor = spinner.getEditor();
+            if (editor instanceof JSpinner.DefaultEditor) {
+            ((JSpinner.DefaultEditor) editor).getTextField().setEditable(false);
+            }
             Object[] options = {"Aceptar", "Cancelar"};
             int option = JOptionPane.showOptionDialog(null, spinner, "Seleccione la cantidad",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
