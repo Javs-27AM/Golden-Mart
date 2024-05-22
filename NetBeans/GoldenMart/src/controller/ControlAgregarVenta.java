@@ -30,10 +30,7 @@ public class ControlAgregarVenta {
 
                         // Mostrar la lista completa de productos vendidos
                         //mostrarProductosVendidos();
-                        Object[] options = {"Aceptar"};
-                        JOptionPane optionPane = new JOptionPane("Producto agregado al carrito.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options, options[0]);
-                        JDialog dialog = optionPane.createDialog("Éxito");
-                        dialog.setVisible(true);
+                        
                     } 
                 } else {
                     Object[] options = {"Aceptar"};

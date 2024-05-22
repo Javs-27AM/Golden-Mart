@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JDialog;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerNumberModel;
 
 
 public class Producto {
@@ -354,51 +356,78 @@ public class Producto {
     }
     
     
-    public void agregarVenta(int idProducto, JTextArea jTicket, List<Producto> productosVendidos) {
-        Producto producto = obtenerProductoPorId(idProducto);
-        if (producto != null) {
-           
-            // Verificar si hay suficiente cantidad disponible del producto
-            if (producto.getCantidadDisponible() > 0) {
-               
-                int nuevaCantidadDisponible = producto.getCantidadDisponible() - 1;
+   public void agregarVenta(int idProducto, JTextArea jTicket, List<Producto> productosVendidos) {
+    Producto producto = obtenerProductoPorId(idProducto);
+    if (producto != null) {
+        // Verificar si hay suficiente cantidad disponible del producto
+        if (producto.getCantidadDisponible() > 0) {
+            // Mostrar cuadro de diálogo con un spinner para que el usuario seleccione la cantidad
+            JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 0, producto.getCantidadDisponible(), 0));
+            Object[] options = {"Aceptar", "Cancelar"};
+            int option = JOptionPane.showOptionDialog(null, spinner, "Seleccione la cantidad",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[0]);
 
-                actualizarCantidadDisponibleEnBD(idProducto, nuevaCantidadDisponible);
+            if (option == JOptionPane.OK_OPTION) {
+                int cantidadSeleccionada = (int) spinner.getValue();
 
-                // Agregar el producto a la lista de productos vendidos
-                productosVendidos.add(producto);
+                // Verificar si la cantidad seleccionada excede la cantidad disponible del producto
+                if (cantidadSeleccionada > producto.getCantidadDisponible()) {
+                    
+                    Object[] options1 = {"Aceptar"};
+                    JOptionPane optionPane = new JOptionPane("La cantidad seleccionada excede los productos en stock.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options1, options1[0]);
+                    JDialog dialog = optionPane.createDialog("Error");
+                    dialog.setVisible(true);
+                   } else {
+                    // Restar la cantidad seleccionada de la cantidad disponible del producto
+                    int nuevaCantidadDisponible = producto.getCantidadDisponible() - cantidadSeleccionada;
 
-                // Agregar el nombre y el precio del producto al textArea
-                // jTicket.append(producto.getNombre() + " - Precio: $" + producto.getPrecio() + "\n");
-            } else {
-                // Mostrar un mensaje de error si el producto está agotado
-                JOptionPane.showMessageDialog(null, "El producto seleccionado está agotado.", "Error", JOptionPane.ERROR_MESSAGE);
-               }
-        } else {
-            // Mostrar un mensaje de error si el producto no está disponible
-            JOptionPane.showMessageDialog(null, "El producto seleccionado no está disponible en este momento.", "Error", JOptionPane.ERROR_MESSAGE);
+                    // Actualizar la cantidad disponible en la base de datos
+                    actualizarCantidadDisponibleEnBD(idProducto, nuevaCantidadDisponible);
+
+                    // Agregar el producto a la lista de productos vendidos n veces
+                    for (int i = 0; i < cantidadSeleccionada; i++) {
+                        productosVendidos.add(producto);
+                    }
+                    Object[] options1 = {"Aceptar"};
+                        JOptionPane optionPane = new JOptionPane("Producto agregado al carrito.", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options1, options1[0]);
+                        JDialog dialog = optionPane.createDialog("Éxito");
+                        dialog.setVisible(true);
+                    // Agregar el nombre y el precio del producto al textArea
+                    //jTicket.append(producto.getNombre() + " - Precio: $" + producto.getPrecio() + "\n");
+                }
             }
+        } else {
+            // Mostrar un mensaje de error si el producto está agotado
+                    Object[] options1 = {"Aceptar"};
+                    JOptionPane optionPane = new JOptionPane("El producto seleccionado está agotado.", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, options1, options1[0]);
+                    JDialog dialog = optionPane.createDialog("Error");
+                    dialog.setVisible(true);
+        }
+    } else {
+        // Mostrar un mensaje de error si el producto no está disponible
+        JOptionPane.showMessageDialog(null, "El producto seleccionado no está disponible en este momento.", "Error", JOptionPane.ERROR_MESSAGE);
     }
-
+}
 
 // Método para actualizar la cantidad disponible en la base de datos
-    public void actualizarCantidadDisponibleEnBD(int idProducto, int nuevaCantidad) {
-        String sql = "UPDATE producto SET Cantidad_Disponible = ? WHERE IdProducto = ?";
+     public void actualizarCantidadDisponibleEnBD(int idProducto, int nuevaCantidad) {
+    String sql = "UPDATE producto SET Cantidad_Disponible = ? WHERE IdProducto = ?";
 
-        try (Connection con = conexion.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setInt(1, nuevaCantidad);
-            pstmt.setInt(2, idProducto);
-            pstmt.executeUpdate();
-           // System.out.println("Cantidad disponible del producto actualizada en la base de datos.");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al actualizar la cantidad disponible del producto en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-        }
+    try (Connection con = conexion.getConnection();
+         PreparedStatement pstmt = con.prepareStatement(sql)) {
+        pstmt.setInt(1, nuevaCantidad);
+        pstmt.setInt(2, idProducto);
+        pstmt.executeUpdate();
+        // System.out.println("Cantidad disponible del producto actualizada en la base de datos.");
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al actualizar la cantidad disponible del producto en la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
     }
-
-
-    public void eliminarVenta(int idProducto, List<Producto> productosVendidos) {
+}
+     
+     
+     public void eliminarVenta(int idProducto, List<Producto> productosVendidos) {
     // Verificar si la lista de productos vendidos está vacía
     if (productosVendidos.isEmpty()) {
         // Mostrar un mensaje de error si no hay productos en el carrito
@@ -431,14 +460,15 @@ public class Producto {
         actualizarCantidadDisponibleEnBD(idProducto, nuevaCantidadDisponible);
 
         // Iterar sobre la lista de productos vendidos
+        boolean eliminado = false; // Bandera para indicar si ya se eliminó un producto
         Iterator<Producto> iter = productosVendidos.iterator();
         while (iter.hasNext()) {
             Producto p = iter.next();
-            // Si el ID del producto coincide con el ID especificado
-            if (p.getIdProducto() == idProducto) {
+            // Si el ID del producto coincide con el ID especificado y aún no se ha eliminado ninguno
+            if (p.getIdProducto() == idProducto && !eliminado) {
                 // Eliminar el producto de la lista
                 iter.remove();
-                break; // Salir del bucle una vez que se haya eliminado el producto
+                eliminado = true;// Salir del bucle una vez que se haya eliminado el producto
             }
         }
     }

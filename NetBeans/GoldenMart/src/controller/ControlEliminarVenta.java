@@ -23,7 +23,7 @@ public class ControlEliminarVenta {
             for (Producto producto : productosVendidos) {
                 if (producto.getIdProducto() == idProductoEliminar) {
                     eliminarVenta(producto);
-                    productosVendidos.remove(producto); // Eliminar el producto de la lista original
+                   // productosVendidos.remove(producto); // Eliminar el producto de la lista original
                     break; // Salir del bucle una vez que se haya eliminado el producto
                 }
             }
